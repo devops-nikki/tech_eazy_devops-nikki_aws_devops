@@ -30,8 +30,8 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
 
    terraform init
    terraform validate
-   terraform plan
-   terraform apply
+   terraform plan -var-file="your .tfvars files"
+   terraform apply -var-file="your .tfvars files"
 
 
 4. **Wait a few minutes until the app is reachable on the EC2 public IP via port 80.**
@@ -60,14 +60,372 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
 
    ![Java App Output](Output_ss/postman_.png)
 
-   **JAVA App deployment Through Browser:**
+   **✅ JAVA App deployment Through Browser:**
   ![Java App_browser_Output](Output_ss/ec2-deployed.png)
    
-   **After all the setup don't forget to run:**(for cost-saving)
+   **✅ After all the setup don't forget to run:**(for cost-saving)
      terraform destroy
 
+# ✅ Techeazy AWS Internship -DevOps Assignment 2 – IAM, S3, Log Upload (Completed)
 
-**🙌 Author**
+## 📌 Overview
+
+This assignment automates secure log archival from EC2 instances to a private Amazon S3 bucket using Terraform and a Bash script. The project demonstrates key DevSecOps principles, including:
+
+- IAM policy control
+- EC2 lifecycle automation
+- S3 lifecycle configuration
+- Secure log upload and verification
+
+---
+
+## ✅ Completed Tasks
+
+### 🔐 IAM Roles
+
+- Created two custom IAM policies:
+  - `ReadOnlyAccessToS3`
+  - `WriteOnlyAccessToS3`
+- Attached policies to respective roles using IAM Instance Profiles for **least privilege** access.
+
+### 🪣 S3 Bucket Setup
+
+- Created a **private** S3 bucket (`techeazy-logs-bucket-nikki`)
+- Enabled **block public access**
+- Configured **lifecycle rule** to clean logs older than 7 days
+
+### 💻 EC2 Log Upload Automation
+
+- Captured logs from `/var/log/my-app.log` 
+- uploaded to S3 on **shutdown**
+- Fully automated using:
+  - Bash script: `user_data.sh.tf.tpl`
+  - IAM write role
+
+### 📂 Terraform Code Structure
+
+| File | Description |
+|------|-------------|
+| `main.tf` | EC2 and networking setup |
+| `iam_role_a.tf` and `iam_role_b.tf`| IAM policies and roles |
+| `s3_bucket.tf` | S3 bucket creation and lifecycle rule |
+| `user_data.sh.tftpl` | Bash script for uploading logs |
+| `README.md` | Documentation |
+
+---
+
+## 🔍 Log Verification
+
+- ✅ Successfully uploaded logs to S3 (`app_logs/`, `system_logs/`)
+- ✅ Verified **read-only** access from another EC2 instance using the `ReadOnlyAccessToS3` IAM role through AWS-CLI
+
+## 🚀 How to Deploy
+
+```bash
+terraform init
+terraform apply -var-file="your .tfvars file"
+
+📁 Files Modified
+main.tf
+s3_bucket.tf
+user_data.sh.tftpl
+terraform.tfvars
+README.md
+
+## 🖼️ Deployment Screenshots
+
+### ✅ Deployment Output
+> `"Successfully Deployed"`
+EC2 deployed (output_ss/public_ip.png)
+
+### ✅ EC2 Instances Running
+![EC2 Instances](output_ss/ec2.png)
+
+### ✅ S3 bucket created
+![S3_bucket](output_ss/s3_bucket.png)
+
+### ✅ Logs in S3
+- `/app_logs/` → (output_ss/app_logs.png)
+- `/system_logs/` → (output_ss/system_logs.png)
+
+### ✅ verify role_a
+-`verify_role_a`  → (output_ss/verify_role_a.png)
+---
+
+## 🚀 How to Deploy
+
+```bash
+terraform init
+terraform apply -var-file="your .tfvars file"
+
+📁 Files Modified
+main.tf
+s3_bucket.tf
+user_data.sh.tftpl
+terraform.tfvars
+README.md
+
+ **✅ After all the setup don't forget to run:**(for cost-saving)
+     terraform destroy
+
+## 🧑‍🤝‍🧑 Collaborators Invited-
+All teammates and mentors have been added as collaborators to the GitHub repository.
+
+## 🔁 Pull Request Notes
+
+Let me know if you'd like to merge the PR or wait for mentor approval.
+Thank you for reviewing! 😊
+
+# 📦 Assignment 3 – CI/CD Deployment with GitHub Actions, Custom VPC, EC2 & S3
+
+## 📁 Objective
+
+Automate infrastructure provisioning and deployment of a Java web application using:
+- **Terraform** for AWS infrastructure (VPC, EC2, S3, IAM)
+- **GitHub Actions** for CI/CD
+- **Health check** for the deployed application
+- **Log archival** from EC2 to S3
+
+---
+
+## 🛠️ What Was Done
+
+### ✅ Infrastructure Setup via Terraform
+- Created a **custom VPC** with public subnet
+- Launched an **EC2 instance** inside the VPC
+- Attached **IAM instance profile (Role B)** to allow S3 upload
+- Created an **S3 bucket** to store logs
+- EC2 user data script uploads application logs to S3 during boot
+
+### ✅ GitHub Actions (`deploy.yml`)
+- Configured AWS credentials using GitHub Secrets
+- Automatically runs on `push` or `tag` to `feature/assignment-3`
+- Executes `terraform init`, `plan`, and `apply` to create infra
+- Uses `curl` to validate app is live on port 80 via EC2 public IP
+
+---
+
+## 🚀 Deployment Workflow
+
+### 📂 Trigger
+The workflow is triggered on `git push` to the `feature/assignment-3` branch.
+
+### 🧩 Steps in `.github/workflows/deploy.yml`
+1. **Checkout Code**
+2. **Setup Terraform**
+3. **Configure AWS Credentials**
+4. **Terraform Init **
+5. **Terraform apply -var-files="stage.tfvars(dev.tfvars)"
+6. **Check App Health via curl**
+7. **Finish**
+
+---
+
+## 🧪 Health Check
+
+After deployment, the workflow:
+- Retrieves EC2 instance public IP (tagged `AppServer-*`)
+- Executes a `curl` request on `http://<EC2_IP>`
+- Fails the workflow if app doesn't respond after retries
+
+---
+
+## 📦 Log Archival
+
+- EC2 runs a `user_data.sh` script that compresses and uploads logs to the S3 bucket.
+- Bucket name and file path are passed through Terraform variables and instance profile.
+
+## 🧾 Folder Structure
+techeazy-assignment/
+├── Output_ss/
+│   ├── app_logs.png
+│   ├── ec2-deployed.png
+│   ├── ec2.png
+│   ├── postman.png
+│   ├── public_ip.png
+│   ├── s3_bucket.png
+│   ├── system_logs.png
+│   └── verify_role_a.png
+│
+├── ec2-deployment/
+│   ├── iam_instance_profile.tf
+│   ├── iam_role_a.tf
+│   ├── iam_role_b.tf
+│   ├── main.tf
+│   ├── output.tf
+│   ├── s3_bucket.tf
+│   ├── vpc.tf
+│   ├── variables.tf
+│   ├── terraform.tfvars
+│   ├── terraform.tfstate
+│   ├── terraform.tfstate.backup
+│   └── scripts/
+│       └── user_data.sh.tftpl
+│
+├── .github/
+│   └── workflows/
+│       └── deploy.yml
+│
+├── Techeazy AWS internship API.postman_collection (1).json
+└── README.md
+
+## 🔐 GitHub Secrets Used
+
+| Secret Name           | Purpose                      |
+|-----------------------|------------------------------|
+| `AWS_ACCESS_KEY_ID`   | Access key for AWS IAM user  |
+| `AWS_SECRET_ACCESS_KEY` | Secret key for AWS IAM user|
+
+## 🧹 Cleanup
+
+To avoid AWS charges, run:
+
+```bash
+terraform destroy
+
+**🙌 Author**        
 
   Nikki Goyal
   Techeazy AWS Internship | June 2025
+
+# 🚀 DevOps Internship – Assignment 3  
+## Terraform Infra + Java App EC2 Deployment + GitHub Actions CI/CD + S3 Logging
+
+## ✅ Objective
+
+Automate provisioning of AWS infrastructure using **Terraform**, deploy a **Spring Boot** application to **EC2**, set up a **CI/CD pipeline with GitHub Actions**, and configure **S3 bucket log archival** with lifecycle rules.
+
+
+## 🧰 Tech Stack
+
+| Technology        | Purpose                              |
+|-------------------|--------------------------------------|
+| Terraform         | Infrastructure as Code (IaC)         |
+| AWS               | Cloud Services                       |
+| GitHub Actions    | Continuous Integration/Deployment    |
+| Spring Boot (Java)| Web Application                      |
+| Amazon S3         | Log Storage & Lifecycle Management   |
+
+
+## 🏗️ Infrastructure Overview
+
+Provisioned using **Terraform**:
+
+- **Custom VPC**   
+- **Public Subnet**  
+- **Internet Gateway + Route Table**  
+- **Security Group**: Allows inbound **HTTP (80)** and **SSH (22)**  
+- **EC2 Instance**: ubuntu, `t2.micro`, bootstrapped via `user_data.sh`  
+- **S3 Bucket**: For log uploads  
+- **IAM Role** + **Instance Profile**: Allows EC2 to upload logs to S3  
+- **S3 Lifecycle Rule**: Automatically deletes logs after 30 days  
+
+---
+
+## ⚙️ EC2 Bootstrapping (user_data.sh.tftpl)
+
+Upon launch, EC2 performs:
+
+1. Installs **Java**, **Maven**, and **AWS CLI**
+2. Clones the GitHub repo (`${REPO_URL}`)
+3. Builds the app using `mvn clean install`
+4. Starts the app on **port 80**
+5. Uploads logs:
+   - `/var/log/cloud-init.log` → `s3://<log-bucket>/system_logs/`
+   - `/var/log/my-app.log` → `s3://<log-bucket>/app_logs/`
+6. Signals app readiness by uploading `app_ready.txt` to:
+   - `s3://<log-bucket>/status/app_ready.txt`
+7. Auto-shutdown after defined time (`shutdown_after_minutes`)
+
+---
+
+## 🔁 GitHub Actions CI/CD Workflow
+
+### 🎯 Trigger  
+Runs on **push** to `feature/assignment-3` branch
+
+### 🧱 Steps:
+
+1. Checkout repository
+2. Set up AWS credentials from **GitHub Secrets**
+3. Run Terraform (`init`, `apply`) using `dev.tfvars`
+4. Get EC2 public IP
+5. Wait for EC2 to upload `app_ready.txt` to S3
+6. Validate HTTP 200 response from the app URL
+7. Mark workflow as **success**
+
+---
+
+## ✅ CI/CD Highlights
+
+- ✅ **Fully automated** from provisioning to validation  
+- 🔒 **Secure** – uses IAM roles and GitHub Secrets  
+- 🕵️‍♂️ **Smart wait** – waits for EC2 readiness via S3 signal  
+- ⚙️ **Dynamic IP detection** – no hardcoding
+
+## 📸 Screenshots & Proofs
+
+### 1️⃣ EC2 Instance Running  
+✅ Java app successfully launched an EC2 instance.
+
+   EC2 deployed (Output_ss/ec2_vpc_run.png)
+
+### 2️⃣ Logs in S3  
+✅ Logs like `cloud-init.log`, `my-app.log`, and `app_ready.txt` found under correct prefixes.
+📂 Example S3 paths:
+- `s3://<your-bucket-name>/system_logs/cloud-init.log`  
+- `s3://<your-bucket-name>/app_logs/my-app.log`  
+- `s3://<your-bucket-name>/status/app_ready.txt`
+   
+
+   **Lists of logs in s3 bucket**
+     logs_lists (Output_ss/s3_logs.png)
+
+   **App_logs**
+    app_logs (Output_ss/auto_app_logs.png)
+
+   **System_logs**
+    sytem_logs (Output_ss/auto_system_logs.png)
+
+
+
+
+### 3️⃣ GitHub Actions – CI/CD  
+✅ All steps executed, including waiting for readiness and validating the app endpoint.
+
+     EC2 deployed (Output_ss/gitflow.png)
+     EC2 deployed (Output_ss/workflow_run.png)
+
+### 4️⃣ Spring Boot App Live on EC2  
+✅ Application accessible via public IP over **port 80**  
+📍 `http://<ec2-public-ip>` → Returns **HTTP 200**
+     EC2 deployed (Output_ss/java_app_3.png)
+---
+
+## ✅ Final Output Summary
+
+| Output                         | Value / Status                 |
+|--------------------------------|--------------------------------|
+| EC2 Public IP                  | http://<your-ec2-ip>           |
+| S3 Log Upload                  | ✅ Successful                   |
+| Application Health             | ✅ HTTP 200 OK                  |
+| Terraform Apply                | ✅ Success                      |
+| GitHub Actions CI/CD Pipeline | ✅ All steps passed             |
+
+---
+
+## ✨ Author
+
+👩‍💻 **Nikki Goyal**  
+🎓 Role: AWS DevOps Intern – TechEazy Consulting  
+💡 Skills: AWS | Terraform | GitHub Actions | DevOps | CI/CD | Java | S3  
+🔗 LinkedIn: [linkedin.com/in/nikki-goyal-devops](https://www.linkedin.com/in/nikki-goyal-devops)
+
+---
+
+## 📤 Final Git Commit
+
+```bash
+git add .
+git commit -m "✅ Final Assignment 3: Full Terraform Infra + Java EC2 App + GitHub Actions CI/CD + S3 Logs"
+git push origin feature/assignment-3
