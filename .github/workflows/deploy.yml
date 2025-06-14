@@ -3,7 +3,7 @@ name: Assignment-3 Automate java app deployment
 on:
   push:
     branches:
-      - main
+      - feature/assignment-3
     tags:
       - deploy-*
   workflow_dispatch:
