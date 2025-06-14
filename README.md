@@ -61,7 +61,7 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
    ![Java App Output](Output_ss/postman_.png)
 
    ** JAVA App deployment Through Browser:**
-  ![Java App_browser_Output](Output_ss/ec2_deployed.png)
+  ![Java App_browser_Output](Output_ss/ec2-deployed.png)
    
    **After all the setup don't forget to run:**(for cost-saving)
      terraform destroy
