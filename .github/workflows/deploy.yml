@@ -20,7 +20,7 @@ jobs:
     env:
       AWS_REGION: ap-south-1
       TF_VAR_aws_region: ap-south-1
-      TF_VAR_logs_bucket_name: techeazy-dev-logs-debasish-87
+      TF_VAR_logs_bucket_name: techeazy-dev-logs-nikki20
       TF_VAR_project_name: techeazy-devops
       TF_VAR_environment: ${{ github.event.inputs.stage || 'dev' }}
       STAGE: ${{ github.event.inputs.stage || 'dev' }}
@@ -40,18 +40,18 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        run: terraform init -chdir=ec2-deployment
+        run: terraform init -chdir=ec2-deployement
 
       - name:  Terraform Plan
-        run: terraform plan -chdir=ec2-deployment -var-file="${{ env.STAGE }}.tfvars"
+        run: terraform plan -chdir=ec2-deployement -var-file="${{ env.STAGE }}.tfvars"
 
       - name:  Terraform Apply
-        run: terraform apply -chdir=ec2-deployment -auto-approve -var-file="${{ env.STAGE }}.tfvars"
+        run: terraform apply -chdir=ec2-deployement -auto-approve -var-file="${{ env.STAGE }}.tfvars"
 
       - name:  Get EC2 Public IP
         id: instance
         run: |
-          echo "INSTANCE_IP=$(terraform -chdir=ec2-deployment output -raw instance_public_ip)" >> $GITHUB_ENV
+          echo "INSTANCE_IP=$(terraform -chdir=ec2-deployement output -raw instance_public_ip)" >> $GITHUB_ENV
           echo "EC2 Public IP: $INSTANCE_IP"
 
       - name:  Wait for EC2 to upload app_ready.txt (Max 5 min)
