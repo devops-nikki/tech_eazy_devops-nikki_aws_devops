@@ -288,3 +288,144 @@ terraform destroy
   Nikki Goyal
   Techeazy AWS Internship | June 2025
 
+# 🚀 DevOps Internship – Assignment 3  
+## Terraform Infra + Java App EC2 Deployment + GitHub Actions CI/CD + S3 Logging
+
+## ✅ Objective
+
+Automate provisioning of AWS infrastructure using **Terraform**, deploy a **Spring Boot** application to **EC2**, set up a **CI/CD pipeline with GitHub Actions**, and configure **S3 bucket log archival** with lifecycle rules.
+
+
+## 🧰 Tech Stack
+
+| Technology        | Purpose                              |
+|-------------------|--------------------------------------|
+| Terraform         | Infrastructure as Code (IaC)         |
+| AWS               | Cloud Services                       |
+| GitHub Actions    | Continuous Integration/Deployment    |
+| Spring Boot (Java)| Web Application                      |
+| Amazon S3         | Log Storage & Lifecycle Management   |
+
+
+## 🏗️ Infrastructure Overview
+
+Provisioned using **Terraform**:
+
+- **Custom VPC**   
+- **Public Subnet**  
+- **Internet Gateway + Route Table**  
+- **Security Group**: Allows inbound **HTTP (80)** and **SSH (22)**  
+- **EC2 Instance**: ubuntu, `t2.micro`, bootstrapped via `user_data.sh`  
+- **S3 Bucket**: For log uploads  
+- **IAM Role** + **Instance Profile**: Allows EC2 to upload logs to S3  
+- **S3 Lifecycle Rule**: Automatically deletes logs after 30 days  
+
+---
+
+## ⚙️ EC2 Bootstrapping (user_data.sh.tftpl)
+
+Upon launch, EC2 performs:
+
+1. Installs **Java**, **Maven**, and **AWS CLI**
+2. Clones the GitHub repo (`${REPO_URL}`)
+3. Builds the app using `mvn clean install`
+4. Starts the app on **port 80**
+5. Uploads logs:
+   - `/var/log/cloud-init.log` → `s3://<log-bucket>/system_logs/`
+   - `/var/log/my-app.log` → `s3://<log-bucket>/app_logs/`
+6. Signals app readiness by uploading `app_ready.txt` to:
+   - `s3://<log-bucket>/status/app_ready.txt`
+7. Auto-shutdown after defined time (`shutdown_after_minutes`)
+
+---
+
+## 🔁 GitHub Actions CI/CD Workflow
+
+### 🎯 Trigger  
+Runs on **push** to `feature/assignment-3` branch
+
+### 🧱 Steps:
+
+1. Checkout repository
+2. Set up AWS credentials from **GitHub Secrets**
+3. Run Terraform (`init`, `apply`) using `dev.tfvars`
+4. Get EC2 public IP
+5. Wait for EC2 to upload `app_ready.txt` to S3
+6. Validate HTTP 200 response from the app URL
+7. Mark workflow as **success**
+
+---
+
+## ✅ CI/CD Highlights
+
+- ✅ **Fully automated** from provisioning to validation  
+- 🔒 **Secure** – uses IAM roles and GitHub Secrets  
+- 🕵️‍♂️ **Smart wait** – waits for EC2 readiness via S3 signal  
+- ⚙️ **Dynamic IP detection** – no hardcoding
+
+## 📸 Screenshots & Proofs
+
+### 1️⃣ EC2 Instance Running  
+✅ Java app successfully launched an EC2 instance.
+
+   EC2 deployed (Output_ss/ec2_vpc_run.png)
+
+### 2️⃣ Logs in S3  
+✅ Logs like `cloud-init.log`, `my-app.log`, and `app_ready.txt` found under correct prefixes.
+📂 Example S3 paths:
+- `s3://<your-bucket-name>/system_logs/cloud-init.log`  
+- `s3://<your-bucket-name>/app_logs/my-app.log`  
+- `s3://<your-bucket-name>/status/app_ready.txt`
+   
+
+   **Lists of logs in s3 bucket**
+     logs_lists (Output_ss/s3_logs.png)
+
+   **App_logs**
+    app_logs (Output_ss/auto_app_logs.png)
+
+   **System_logs**
+    sytem_logs (Output_ss/auto_system_logs.png)
+
+
+
+
+### 3️⃣ GitHub Actions – CI/CD  
+✅ All steps executed, including waiting for readiness and validating the app endpoint.
+
+     EC2 deployed (Output_ss/gitflow.png)
+     EC2 deployed (Output_ss/workflow_run.png)
+
+### 4️⃣ Spring Boot App Live on EC2  
+✅ Application accessible via public IP over **port 80**  
+📍 `http://<ec2-public-ip>` → Returns **HTTP 200**
+     EC2 deployed (Output_ss/java_app_3.png)
+---
+
+## ✅ Final Output Summary
+
+| Output                         | Value / Status                 |
+|--------------------------------|--------------------------------|
+| EC2 Public IP                  | http://<your-ec2-ip>           |
+| S3 Log Upload                  | ✅ Successful                   |
+| Application Health             | ✅ HTTP 200 OK                  |
+| Terraform Apply                | ✅ Success                      |
+| GitHub Actions CI/CD Pipeline | ✅ All steps passed             |
+
+---
+
+## ✨ Author
+
+👩‍💻 **Nikki Goyal**  
+🎓 Role: AWS DevOps Intern – TechEazy Consulting  
+💡 Skills: AWS | Terraform | GitHub Actions | DevOps | CI/CD | Java | S3  
+🔗 LinkedIn: [linkedin.com/in/nikki-goyal-devops](https://www.linkedin.com/in/nikki-goyal-devops)
+
+---
+
+## 📤 Final Git Commit
+
+```bash
+git add .
+git commit -m "✅ Final Assignment 3: Full Terraform Infra + Java EC2 App + GitHub Actions CI/CD + S3 Logs"
+git push origin feature/assignment-3

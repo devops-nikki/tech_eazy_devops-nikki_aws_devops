@@ -47,12 +47,12 @@ jobs:
       - name:  Terraform Plan
         run: |
          cd ec2-deployement 
-         terraform plan -var-file="${{ env.STAGE }}.tfvars"
+         terraform plan -var-file="${{env.STAGE }}.tfvars"
 
       - name:  Terraform Apply
         run: |
          cd ec2-deployement
-         terraform apply -auto-approve -var-file="${{ env.STAGE }}.tfvars"
+         terraform apply -auto-approve -var-file="${{env.STAGE}}.tfvars"
 
       - name: Get EC2 Public IP
         run: |
