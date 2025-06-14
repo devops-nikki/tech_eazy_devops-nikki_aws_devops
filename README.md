@@ -273,8 +273,8 @@ techeazy-assignment/
 | Secret Name           | Purpose                      |
 |-----------------------|------------------------------|
 | `AWS_ACCESS_KEY_ID`   | Access key for AWS IAM user  |
-| `AWS_SECRET_ACCESS_KEY` | Secret key for AWS IAM user  |
-
+| `AWS_SECRET_ACCESS_KEY` | Secret key for AWS IAM user|
+AWS_REGION=VALUE
 
 ## 🧹 Cleanup
 
