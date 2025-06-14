@@ -19,6 +19,7 @@ git clone ${REPO_URL}
 cd $(basename "${REPO_URL}" .git)
 
 mvn clean install
+
 java -jar target/*.jar --server.port=80 > /var/log/my-app.log 2>&1 &
 
 # Wait for a bit to let the app run
