@@ -1,0 +1,39 @@
+{
+	"info": {
+		"_postman_id": "76817517-1361-4a49-9481-63fb70760a9b",
+		"name": "Techeazy AWS internship API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45709910"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://13.232.96.162/",
+					"protocol": "http",
+					"host": [
+						"13",
+						"232",
+						"96",
+						"162"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+# Update system
+apt-get update -y
+apt-get install -y openjdk-21-jdk git maven
+
+# Clone repo and run
+cd /home/ubuntu
+git clone ${REPO_URL}
+cd $(basename "${REPO_URL}" .git)
+
+mvn clean install
+java -jar target/*.jar --server.port=80 &
+
+# Auto-shutdown
+shutdown_time=$((${shutdown_after_minutes} * 60))
+shutdown -h +${shutdown_after_minutes}
