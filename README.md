@@ -176,7 +176,114 @@ All teammates and mentors have been added as collaborators to the GitHub reposit
 Let me know if you'd like to merge the PR or wait for mentor approval.
 Thank you for reviewing! 😊
 
-**🙌 Author**
+# 📦 Assignment 3 – CI/CD Deployment with GitHub Actions, Custom VPC, EC2 & S3
+
+## 📁 Objective
+
+Automate infrastructure provisioning and deployment of a Java web application using:
+- **Terraform** for AWS infrastructure (VPC, EC2, S3, IAM)
+- **GitHub Actions** for CI/CD
+- **Health check** for the deployed application
+- **Log archival** from EC2 to S3
+
+---
+
+## 🛠️ What Was Done
+
+### ✅ Infrastructure Setup via Terraform
+- Created a **custom VPC** with public subnet
+- Launched an **EC2 instance** inside the VPC
+- Attached **IAM instance profile (Role B)** to allow S3 upload
+- Created an **S3 bucket** to store logs
+- EC2 user data script uploads application logs to S3 during boot
+
+### ✅ GitHub Actions (`deploy.yml`)
+- Configured AWS credentials using GitHub Secrets
+- Automatically runs on `push` or `tag` to `feature/assignment-3`
+- Executes `terraform init`, `plan`, and `apply` to create infra
+- Uses `curl` to validate app is live on port 80 via EC2 public IP
+
+---
+
+## 🚀 Deployment Workflow
+
+### 📂 Trigger
+The workflow is triggered on `git push` to the `feature/assignment-3` branch.
+
+### 🧩 Steps in `.github/workflows/deploy.yml`
+1. **Checkout Code**
+2. **Setup Terraform**
+3. **Configure AWS Credentials**
+4. **Terraform Init + Apply**
+5. **Check App Health via curl**
+6. **Finish**
+
+---
+
+## 🧪 Health Check
+
+After deployment, the workflow:
+- Retrieves EC2 instance public IP (tagged `AppServer-*`)
+- Executes a `curl` request on `http://<EC2_IP>`
+- Fails the workflow if app doesn't respond after retries
+
+---
+
+## 📦 Log Archival
+
+- EC2 runs a `user_data.sh` script that compresses and uploads logs to the S3 bucket.
+- Bucket name and file path are passed through Terraform variables and instance profile.
+
+## 🧾 Folder Structure
+techeazy-assignment/
+├── Output_ss/
+│   ├── app_logs.png
+│   ├── ec2-deployed.png
+│   ├── ec2.png
+│   ├── postman.png
+│   ├── public_ip.png
+│   ├── s3_bucket.png
+│   ├── system_logs.png
+│   └── verify_role_a.png
+│
+├── ec2-deployment/
+│   ├── iam_instance_profile.tf
+│   ├── iam_role_a.tf
+│   ├── iam_role_b.tf
+│   ├── main.tf
+│   ├── output.tf
+│   ├── s3_bucket.tf
+│   ├── vpc.tf
+│   ├── variables.tf
+│   ├── terraform.tfvars
+│   ├── terraform.tfstate
+│   ├── terraform.tfstate.backup
+│   └── scripts/
+│       └── user_data.sh.tftpl
+│
+├── .github/
+│   └── workflows/
+│       └── deploy.yml
+│
+├── Techeazy AWS internship API.postman_collection (1).json
+└── README.md
+
+## 🔐 GitHub Secrets Used
+
+| Secret Name           | Purpose                      |
+|-----------------------|------------------------------|
+| `AWS_ACCESS_KEY_ID`   | Access key for AWS IAM user  |
+| `AWS_SECRET_ACCESS_KEY` | Secret key for AWS IAM user  |
+
+
+## 🧹 Cleanup
+
+To avoid AWS charges, run:
+
+```bash
+terraform destroy
+
+**🙌 Author**        
 
   Nikki Goyal
   Techeazy AWS Internship | June 2025
