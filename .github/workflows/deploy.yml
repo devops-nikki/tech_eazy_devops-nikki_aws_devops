@@ -3,7 +3,7 @@ name: Techeazy Assignment 3 - Auto Deploy
 on:
   push:
     branches:
-      - main
+      - feature/assignment-3
     tags:
       - deploy-*
   workflow_dispatch:
