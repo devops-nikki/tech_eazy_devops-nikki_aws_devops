@@ -33,10 +33,10 @@ jobs:
         run: terraform -chdir=ec2-deployement init
 
       - name: Terraform Plan
-        run: terraform -chdir=ec2-deployement plan -vars="aws_region=${{env.AWS_REGION}}"
+        run: terraform -chdir=ec2-deployement plan -var="aws_region=${{env.AWS_REGION}}"
 
       - name: Terraform Apply
-        run: terraform -chdir=ec2-deployement apply -auto-approve -vars="aws_region=${{env.AWS_REGION}}"
+        run: terraform -chdir=ec2-deployement apply -auto-approve -var="aws_region=${{env.AWS_REGION}}"
 
 
       - name:  Wait for EC2 to initialize
