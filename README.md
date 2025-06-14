@@ -30,8 +30,8 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
 
    terraform init
    terraform validate
-   terraform plan
-   terraform apply
+   terraform plan -var-file="your .tfvars files"
+   terraform apply -var-file="your .tfvars files"
 
 
 4. **Wait a few minutes until the app is reachable on the EC2 public IP via port 80.**
@@ -214,9 +214,10 @@ The workflow is triggered on `git push` to the `feature/assignment-3` branch.
 1. **Checkout Code**
 2. **Setup Terraform**
 3. **Configure AWS Credentials**
-4. **Terraform Init + Apply**
-5. **Check App Health via curl**
-6. **Finish**
+4. **Terraform Init **
+5. **Terraform apply -var-files="stage.tfvars(dev.tfvars)"
+6. **Check App Health via curl**
+7. **Finish**
 
 ---
 
@@ -274,7 +275,6 @@ techeazy-assignment/
 |-----------------------|------------------------------|
 | `AWS_ACCESS_KEY_ID`   | Access key for AWS IAM user  |
 | `AWS_SECRET_ACCESS_KEY` | Secret key for AWS IAM user|
-AWS_REGION=VALUE
 
 ## 🧹 Cleanup
 

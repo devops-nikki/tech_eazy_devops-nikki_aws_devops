@@ -3,11 +3,19 @@ name: Techeazy Assignment 3 - Auto Deploy
 on:
   push:
     branches:
-      - feature/assignment-3
+      - main
+    tags:
+      - deploy-*
   workflow_dispatch:
+    inputs:
+      stage:
+        description: 'Deployment stage (dev/stage/prod)'
+        required: true
+        default: 'dev'
 
 env:
-  AWS_REGION: ${{vars.AWS_REGION}}
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  STAGE: ${{ github.event.inputs.stage || 'dev' }}
 
 jobs:
   deploy:
@@ -22,7 +30,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{env.AWS_REGION}}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -30,30 +38,44 @@ jobs:
           terraform_version: 1.6.6
 
       - name: Terraform Init
-        run: terraform -chdir=ec2-deployement init
+        run: terraform -chdir=ec2-deployment init
 
       - name: Terraform Plan
-        run: terraform -chdir=ec2-deployement plan -var="aws_region=${{env.AWS_REGION}}"
+        run: terraform -chdir=ec2-deployment plan -var="aws_region=${{ env.AWS_REGION }}" -var="stage=${{ env.STAGE }}"
 
       - name: Terraform Apply
-        run: terraform -chdir=ec2-deployement apply -auto-approve -var="aws_region=${{env.AWS_REGION}}"
+        run: terraform -chdir=ec2-deployment apply -auto-approve -var="aws_region=${{ env.AWS_REGION }}" -var="stage=${{ env.STAGE }}"
 
-
-      - name:  Wait for EC2 to initialize
+      - name: Wait for EC2 to Initialize
         run: sleep 60
 
-      - name: Check if App is Running
+      - name: Get EC2 Public IP
+        id: get_ip
         run: |
           EC2_IP=$(aws ec2 describe-instances \
             --filters "Name=tag:Name,Values=TechEazyApp" "Name=instance-state-name,Values=running" \
-            --query "Reservations[*].Instances[*].PublicIpAddress" \
+            --query "Reservations[].Instances[].PublicIpAddress" \
             --output text)
-
+          echo "EC2_IP=$EC2_IP" >> $GITHUB_ENV
           echo "EC2 Public IP: $EC2_IP"
-          
-          if curl --connect-timeout 5 --silent "http://$EC2_IP" | grep -q "Welcome"; then
-            echo "✅ App is running!"
+
+      - name: Deploy App via SSH
+        run: |
+          chmod 400 ec2-deployment/techeazy-key.pem
+          scp -o StrictHostKeyChecking=no -i ec2-deployment/techeazy-key.pem setup/deploy.sh ubuntu@$EC2_IP:/home/ubuntu/deploy.sh
+          ssh -o StrictHostKeyChecking=no -i ec2-deployment/techeazy-key.pem ubuntu@$EC2_IP 'chmod +x deploy.sh && ./deploy.sh'
+
+      - name: Upload Logs to S3
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ec2-deployment/techeazy-key.pem ubuntu@$EC2_IP "\
+            aws s3 cp /var/log/cloud-init.log s3://techeazy-logs-${{ env.STAGE }}/cloud-init.log && \
+            aws s3 cp /var/log/syslog s3://techeazy-logs-${{ env.STAGE }}/syslog"
+
+      - name: Check if App is Running
+        run: |
+          if curl --connect-timeout 5 --silent http://$EC2_IP | grep -q "welcome"; then
+            echo "✅ App is running"
           else
-            echo "❌ App is not running."
+            echo "❌ App is not running"
             exit 1
           fi
