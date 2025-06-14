@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  AWS_REGION: ap-south-1
+  AWS_REGION: ${{vars.AWS_REGION}}
 
 jobs:
   deploy:
@@ -33,24 +33,27 @@ jobs:
         run: terraform -chdir=ec2-deployement init
 
       - name: Terraform Plan
-        run: terraform -chdir=ec2-deployement plan
+        run: terraform -chdir=ec2-deployement plan -vars="aws_region=${{env.AWS_REGION}}"
 
       - name: Terraform Apply
-        run: terraform -chdir=ec2-deployement apply -auto-approve
+        run: terraform -chdir=ec2-deployement apply -auto-approve -vars="aws_region=${{env.AWS_REGION}}"
+
 
       - name:  Wait for EC2 to initialize
         run: sleep 60
 
       - name: Check if App is Running
         run: |
-          EC2_IP=$(aws ec2 describe-instances \ 
-          --filters "Name=tag:Name,Values=AppServer-*" \
-          --query "Reservations[0].Instances[0].PublicIpAddress" \ 
-          --output text)
+          EC2_IP=$(aws ec2 describe-instances \
+            --filters "Name=tag:Name,Values=TechEazyApp" "Name=instance-state-name,Values=running" \
+            --query "Reservations[*].Instances[*].PublicIpAddress" \
+            --output text)
+
+          echo "EC2 Public IP: $EC2_IP"
           
-          echo "Checking http://$EC2_IP ..."
-          
-          curl --fail --retry 5 --retry-delay 10 http://$EC2_IP || exit 1 {
-          echo "App is not responding at http://$EC2_IP"
-          exit 1
-          }
+          if curl --connect-timeout 5 --silent "http://$EC2_IP" | grep -q "Welcome"; then
+            echo "✅ App is running!"
+          else
+            echo "❌ App is not running."
+            exit 1
+          fi
