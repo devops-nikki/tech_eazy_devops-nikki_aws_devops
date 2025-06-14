@@ -50,7 +50,9 @@ jobs:
          terraform plan -var-file="${{ env.STAGE }}.tfvars"
 
       - name:  Terraform Apply
-        run: terraform apply -chdir=ec2-deployement -auto-approve -var-file="${{ env.STAGE }}.tfvars"
+        run: |
+         cd ec2-deployement
+         terraform apply -auto-approve -var-file="${{ env.STAGE }}.tfvars"
 
       - name:  Get EC2 Public IP
         id: instance
@@ -85,5 +87,5 @@ jobs:
               sleep 15
             fi
           done
-          echo "❌ App failed health check after 40 attempts (~10 mins)"
+          echo " App failed health check after 40 attempts (~10 mins)"
           exit 1
