@@ -38,13 +38,13 @@ jobs:
           terraform_version: 1.6.6
 
       - name: Terraform Init
-        run: terraform -chdir=ec2-deployment init
+        run: terraform -chdir=ec2-deployement init
 
       - name: Terraform Plan
-        run: terraform -chdir=ec2-deployment plan -var="aws_region=${{ env.AWS_REGION }}" -var="stage=${{ env.STAGE }}"
+        run: terraform -chdir=ec2-deployement plan -var="aws_region=${{ env.AWS_REGION }}" -var="stage=${{ env.STAGE }}"
 
       - name: Terraform Apply
-        run: terraform -chdir=ec2-deployment apply -auto-approve -var="aws_region=${{ env.AWS_REGION }}" -var="stage=${{ env.STAGE }}"
+        run: terraform -chdir=ec2-deployement apply -auto-approve -var="aws_region=${{ env.AWS_REGION }}" -var="stage=${{ env.STAGE }}"
 
       - name: Wait for EC2 to Initialize
         run: sleep 60
@@ -62,12 +62,12 @@ jobs:
       - name: Deploy App via SSH
         run: |
           chmod 400 ec2-deployment/techeazy-key.pem
-          scp -o StrictHostKeyChecking=no -i ec2-deployment/techeazy-key.pem setup/deploy.sh ubuntu@$EC2_IP:/home/ubuntu/deploy.sh
-          ssh -o StrictHostKeyChecking=no -i ec2-deployment/techeazy-key.pem ubuntu@$EC2_IP 'chmod +x deploy.sh && ./deploy.sh'
+          scp -o StrictHostKeyChecking=no -i ec2-deployement/techeazy-key.pem setup/deploy.sh ubuntu@$EC2_IP:/home/ubuntu/deploy.sh
+          ssh -o StrictHostKeyChecking=no -i ec2-deployement/techeazy-key.pem ubuntu@$EC2_IP 'chmod +x deploy.sh && ./deploy.sh'
 
       - name: Upload Logs to S3
         run: |
-          ssh -o StrictHostKeyChecking=no -i ec2-deployment/techeazy-key.pem ubuntu@$EC2_IP "\
+          ssh -o StrictHostKeyChecking=no -i ec2-deployement/techeazy-key.pem ubuntu@$EC2_IP "\
             aws s3 cp /var/log/cloud-init.log s3://techeazy-logs-${{ env.STAGE }}/cloud-init.log && \
             aws s3 cp /var/log/syslog s3://techeazy-logs-${{ env.STAGE }}/syslog"
 
