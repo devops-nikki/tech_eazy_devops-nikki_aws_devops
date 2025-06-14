@@ -44,7 +44,6 @@ resource "aws_instance" "app_server" {
     REPO_URL = var.github_repo_url
     shutdown_after_minutes = var.shutdown_after_minutes
   })
-
   tags = {
     Name  = "AppServer-${var.stage}"
     Stage = var.stage
