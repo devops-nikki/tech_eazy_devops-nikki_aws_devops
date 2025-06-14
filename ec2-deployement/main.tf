@@ -30,16 +30,18 @@ resource "aws_instance" "app_server" {
   ami                    = var.ami_id
   instance_type          = var.instance_type
   security_groups        = [aws_security_group.allow_http_and_ssh.name]
+  iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile_b.name
 
   associate_public_ip_address = true
 
-  user_data = templatefile("${path.module}/user_data.sh.tftpl", {
+  user_data = templatefile("${path.module}/scripts/user_data.sh.tftpl", {
+    log_s3_bucket_name=var.log_s3_bucket_name
     REPO_URL = var.github_repo_url
     shutdown_after_minutes = var.shutdown_after_minutes
   })
 
   tags = {
-    Name  = "devops-${var.stage}"
+    Name  = "AppServer-${var.stage}"
     Stage = var.stage
   }
 }
