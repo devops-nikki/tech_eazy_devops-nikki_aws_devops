@@ -1,81 +1,84 @@
-name: Techeazy Assignment 3 - Auto Deploy
+name: Assignment-3 Automate java app deployment
 
 on:
   push:
     branches:
-      - feature/assignment-3
+      - main
     tags:
       - deploy-*
   workflow_dispatch:
     inputs:
       stage:
-        description: 'Deployment stage (dev/stage/prod)'
+        description: 'Deployment stage (dev/prod)'
         required: true
         default: 'dev'
 
-env:
-  AWS_REGION: ${{ vars.AWS_REGION }}
-  STAGE: ${{ github.event.inputs.stage || 'dev' }}
-
 jobs:
   deploy:
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: ap-south-1
+      TF_VAR_aws_region: ap-south-1
+      TF_VAR_logs_bucket_name: techeazy-dev-logs-debasish-87
+      TF_VAR_project_name: techeazy-devops
+      TF_VAR_environment: ${{ github.event.inputs.stage || 'dev' }}
+      STAGE: ${{ github.event.inputs.stage || 'dev' }}
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - name: ⏬ Checkout Code
+        uses: actions/checkout@v3
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Setup Terraform
+      - name:  Setup Terraform
         uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.6.6
 
       - name: Terraform Init
-        run: terraform -chdir=ec2-deployement init
+        run: terraform init -chdir=ec2-deployment
 
-      - name: Terraform Plan
-        run: terraform -chdir=ec2-deployement plan -var="aws_region=${{ env.AWS_REGION }}" -var="stage=${{ env.STAGE }}"
+      - name:  Terraform Plan
+        run: terraform plan -chdir=ec2-deployment -var-file="${{ env.STAGE }}.tfvars"
 
-      - name: Terraform Apply
-        run: terraform -chdir=ec2-deployement apply -auto-approve -var="aws_region=${{ env.AWS_REGION }}" -var="stage=${{ env.STAGE }}"
+      - name:  Terraform Apply
+        run: terraform apply -chdir=ec2-deployment -auto-approve -var-file="${{ env.STAGE }}.tfvars"
 
-      - name: Wait for EC2 to Initialize
-        run: sleep 60
-
-      - name: Get EC2 Public IP
-        id: get_ip
+      - name:  Get EC2 Public IP
+        id: instance
         run: |
-          EC2_IP=$(aws ec2 describe-instances \
-            --filters "Name=tag:Name,Values=TechEazyApp" "Name=instance-state-name,Values=running" \
-            --query "Reservations[].Instances[].PublicIpAddress" \
-            --output text)
-          echo "EC2_IP=$EC2_IP" >> $GITHUB_ENV
-          echo "EC2 Public IP: $EC2_IP"
+          echo "INSTANCE_IP=$(terraform -chdir=ec2-deployment output -raw instance_public_ip)" >> $GITHUB_ENV
+          echo "EC2 Public IP: $INSTANCE_IP"
 
-      - name: Deploy App via SSH
+      - name:  Wait for EC2 to upload app_ready.txt (Max 5 min)
         run: |
-          chmod 400 ec2-deployment/techeazy-key.pem
-          scp -o StrictHostKeyChecking=no -i ec2-deployement/techeazy-key.pem setup/deploy.sh ubuntu@$EC2_IP:/home/ubuntu/deploy.sh
-          ssh -o StrictHostKeyChecking=no -i ec2-deployement/techeazy-key.pem ubuntu@$EC2_IP 'chmod +x deploy.sh && ./deploy.sh'
+          echo "Waiting for EC2 to signal app readiness via app_ready.txt in S3..."
+          for i in {1..30}; do
+            if aws s3 ls s3://${{ env.TF_VAR_logs_bucket_name }}/status/app_ready.txt >/dev/null 2>&1; then
+              echo " Signal received: app_ready.txt found in S3 on attempt $i"
+              break
+            else
+              echo " Attempt $i: app_ready.txt not found... sleeping 10s"
+              sleep 10
+            fi
+          done
 
-      - name: Upload Logs to S3
+      - name: Validate App on Port 80
         run: |
-          ssh -o StrictHostKeyChecking=no -i ec2-deployement/techeazy-key.pem ubuntu@$EC2_IP "\
-            aws s3 cp /var/log/cloud-init.log s3://techeazy-logs-${{ env.STAGE }}/cloud-init.log && \
-            aws s3 cp /var/log/syslog s3://techeazy-logs-${{ env.STAGE }}/syslog"
-
-      - name: Check if App is Running
-        run: |
-          if curl --connect-timeout 5 --silent http://$EC2_IP | grep -q "welcome"; then
-            echo "✅ App is running"
-          else
-            echo "❌ App is not running"
-            exit 1
-          fi
+          echo "Validating app at http://${INSTANCE_IP} ..."
+          for i in {1..40}; do
+            STATUS=$(curl -o /dev/null -s -w "%{http_code}" http://${INSTANCE_IP})
+            if [[ "$STATUS" == "200" ]]; then
+              echo "App is healthy and returned HTTP 200 on attempt $i"
+              exit 0
+            else
+              echo " Attempt $i: App not ready yet, got HTTP $STATUS"
+              sleep 15
+            fi
+          done
+          echo "❌ App failed health check after 40 attempts (~10 mins)"
+          exit 1
