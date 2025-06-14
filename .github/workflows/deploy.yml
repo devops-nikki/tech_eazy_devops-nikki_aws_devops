@@ -54,18 +54,22 @@ jobs:
          cd ec2-deployement
          terraform apply -auto-approve -var-file="${{ env.STAGE }}.tfvars"
 
-      - name:  Get EC2 Public IP
-        id: instance
+      - name: Get EC2 Public IP
         run: |
-         cd ec2-deployement 
-          echo "INSTANCE_IP=$(terraform output -raw app_ec2_public_ip)" >> $GITHUB_ENV
-          echo "EC2 Public IP: $INSTANCE_IP"
+         cd ec2-deployement
+         echo "INSTANCE_IP=$(terraform output -raw app_ec2_public_ip)" >> $GITHUB_ENV
+         echo "EC2 Public IP: $INSTANCE_IP"
+
+      -  name: Set S3 Bucket name
+         run: |
+          cd ec2-deployement
+          echo "TF_VAR_logs_bucket_name=$(terraform output -raw log_s3_log_bucket)" >> $GITHUB_ENV
 
       - name:  Wait for EC2 to upload app_ready.txt (Max 5 min)
         run: |
           echo "Waiting for EC2 to signal app readiness via app_ready.txt in S3..."
           for i in {1..30}; do
-            if aws s3 ls s3://${{ env.TF_VAR_logs_bucket_name }}/status/app_ready.txt >/dev/null 2>&1; then
+            if aws s3 ls s3://$TF_VAR_logs_bucket_name/status/app_ready.txt >/dev/null 2>&1; then
               echo " Signal received: app_ready.txt found in S3 on attempt $i"
               break
             else
