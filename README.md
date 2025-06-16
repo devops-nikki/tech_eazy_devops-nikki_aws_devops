@@ -127,13 +127,8 @@ This assignment automates secure log archival from EC2 instances to a private Am
 `terraform init`
 
 `terraform validate`
-=======
-   **After all the setup don't forget to run:**(for cost-saving)
-   
-     `terraform destroy`
->>>>>>> main
 
-`terraform plan -var-file="your .tfvars file"`
+`terraform plan`
 
 `terraform apply -var-file="your .tfvars file"`
 
