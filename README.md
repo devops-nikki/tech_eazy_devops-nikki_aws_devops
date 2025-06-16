@@ -1,4 +1,5 @@
-# Techeazy AWS Internship-DEVOPS ASSIGNMENT-1 – EC2 Java App Deployment with Terraform
+# Techeazy AWS Internship-DEVOPS ASSIGNMENT-1 -
+# EC2 Java App Deployment with Terraform
 
 ## 📌 Overview
 
@@ -15,34 +16,31 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
 
 1. **Clone this repo:**
    
-   bash``
    git clone https://github.com/devops-nikki/tech_eazy_devops-nikki_aws_devops.git   
    cd tech_eazy_devops-nikki_aws_devops
 
 2. **Set your AWS credentials as environment variables:**
 
-   export AWS_ACCESS_KEY_ID=your_key
+   -export AWS_ACCESS_KEY_ID=your_key
 
-   export AWS_SECRET_ACCESS_KEY=your_secret_key
+   -export AWS_SECRET_ACCESS_KEY=your_secret_key
 
 
 3. **Initialize and apply Terraform:**
 
-   terraform init
+   -terraform init
    
-   terraform validate
+   -terraform validate
    
-   terraform plan
+   -terraform plan
    
-   terraform apply
+   -terraform apply
 
 
 4. **Wait a few minutes until the app is reachable on the EC2 public IP via port 80.**
 
 
 5. **Test API endpoints using Postman:**
-
-   -Import the .json file from the resources folder
 
    -Update the base URL with your EC2 public IP
 
