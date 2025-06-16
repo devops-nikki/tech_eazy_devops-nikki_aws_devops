@@ -1,5 +1,5 @@
-# Techeazy AWS Internship-DEVOPS ASSIGNMENT-1 -
-# EC2 Java App Deployment with Terraform
+# Techeazy AWS Internship-DEVOPS ASSIGNMENT-1 
+#  EC2 Java App Deployment with Terraform
 
 ## 📌 Overview
 
