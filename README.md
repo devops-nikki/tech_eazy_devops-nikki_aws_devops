@@ -348,7 +348,9 @@ Runs on **push** to `feature/assignment-3` branch
 ## 📤 Final Git Commit
 
 `git add .`
+
 `git commit -m "✅ Final Assignment 3: Full Terraform Infra + Java EC2 App + GitHub Actions CI/CD + S3 Logs"`
+
 `git push origin feature/assignment-3`
 
 ## 🧹 Cleanup
