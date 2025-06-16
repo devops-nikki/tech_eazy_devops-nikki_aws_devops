@@ -231,6 +231,8 @@ techeazy-assignment/
 │
 ├── Techeazy AWS internship API.postman_collection (1).json
 └── README.md
+```
+
 
 ## 🔐 GitHub Secrets Used
 
