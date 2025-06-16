@@ -66,7 +66,7 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
    
    **✅ After all the setup don't forget to run:**(for cost-saving)
 
-     `terraform destroy`
+    `terraform destroy`
 
 
 # ✅ Techeazy AWS Internship - DevOps Assignment 2 
