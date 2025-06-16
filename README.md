@@ -123,6 +123,8 @@ This assignment automates secure log archival from EC2 instances to a private Am
 
 ``bash
 terraform init
+terraform validate
+terraform plan
 terraform apply -var-file="your .tfvars file"
 
 ### Files Modified
@@ -157,20 +159,7 @@ terraform apply -var-file="your .tfvars file"
 ![Verify Role A](Output_ss/verify_role_a.png)
 ---
 
-## 🚀 **How to Deploy**
-
-```bash
-terraform init
-terraform apply -var-file="your .tfvars file"
-
-**Files Modified**
-main.tf
-s3_bucket.tf
-user_data.sh.tftpl
-terraform.tfvars
-README.md
-
-✅  **After all the setup don't forget to run:(for cost-saving)**
+✅  **After all the setup Done - don't forget to run:(for cost-saving)**
 
      terraform destroy
 
