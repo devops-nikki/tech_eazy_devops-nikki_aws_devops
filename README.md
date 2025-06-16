@@ -132,51 +132,51 @@ user_data.sh.tftpl
 terraform.tfvars
 README.md
 
-## 🖼️ Deployment Screenshots
+## 🖼️ **Deployment Screenshots**
 
-### ✅ Deployment Output
-> `"Successfully Deployed"`
-EC2 deployed (output_ss/public_ip.png)
+### ✅ **Deployment Output**
+"Successfully Deployed" (Output_ss/public_ip.png)
 
-### ✅ EC2 Instances Running
-![EC2 Instances](output_ss/ec2.png)
+### ✅ **EC2 Instances Running**
+Running Instances (Output_ss/ec2.png)
 
-### ✅ S3 bucket created
-![S3_bucket](output_ss/s3_bucket.png)
+### ✅ **S3 bucket created**
+S3_bucket (Output_ss/s3_bucket.png)
 
-### ✅ Logs in S3
-- `/app_logs/` → (output_ss/app_logs.png)
-- `/system_logs/` → (output_ss/system_logs.png)
+### ✅ **Logs in S3**
+- `/app_logs/` → (Output_ss/app_logs.png)
+- `/system_logs/` → (Output_ss/system_logs.png)
 
-### ✅ verify role_a
--`verify_role_a`  → (output_ss/verify_role_a.png)
+### ✅ **verify role_a**
+-`verify_role_a`  → (Output_ss/verify_role_a.png)
 ---
 
-## 🚀 How to Deploy
+## 🚀 **How to Deploy**
 
 ```bash
 terraform init
 terraform apply -var-file="your .tfvars file"
 
-📁 Files Modified
+📁 **Files Modified**
 main.tf
 s3_bucket.tf
 user_data.sh.tftpl
 terraform.tfvars
 README.md
 
- **✅ After all the setup don't forget to run:**(for cost-saving)
+✅  **After all the setup don't forget to run:(for cost-saving)**
+
      terraform destroy
 
-## 🧑‍🤝‍🧑 Collaborators Invited-
+## 🧑‍🤝‍🧑 **Collaborators Invited-**
 All teammates and mentors have been added as collaborators to the GitHub repository.
 
-## 🔁 Pull Request Notes
+## 🔁 **Pull Request Notes**
 
 Let me know if you'd like to merge the PR or wait for mentor approval.
 Thank you for reviewing! 😊
 
-**🙌 Author**
+🙌 **Author**
 
   Nikki Goyal
   Techeazy AWS Internship | June 2025
