@@ -174,64 +174,28 @@ All teammates and mentors have been added as collaborators to the GitHub reposit
 Let me know if you'd like to merge the PR or wait for mentor approval.
 Thank you for reviewing! 😊
 
-### Assignment 3 – CI/CD Deployment with GitHub Actions, Custom VPC, EC2 & S3
+**🙌 Author**        
 
-## 📁 Objective
+  Nikki Goyal
+  Techeazy AWS Internship | June 2025
 
-Automate infrastructure provisioning and deployment of a Java web application using:
-- **Terraform** for AWS infrastructure (VPC, EC2, S3, IAM)
-- **GitHub Actions** for CI/CD
-- **Health check** for the deployed application
-- **Log archival** from EC2 to S3
+# 🚀 DevOps Internship – Assignment 3  
+## Terraform Infra + Java App EC2 Deployment + GitHub Actions CI/CD + S3 Logging
+
+## ✅ Objective
+
+Automate provisioning of AWS infrastructure using **Terraform**, deploy a **Spring Boot** application to **EC2**, set up a **CI/CD pipeline with GitHub Actions**, and configure **S3 bucket log archival** with lifecycle rules.
 
 
-## 🛠️ What Was Done
+## 🧰 Tech Stack
 
-### ✅ Infrastructure Setup via Terraform
-- Created a **custom VPC** with public subnet
-- Launched an **EC2 instance** inside the VPC
-- Attached **IAM instance profile (Role B)** to allow S3 upload
-- Created an **Private S3 bucket** to store logs
-- EC2 user data script uploads application logs to S3 during boot
-
-### ✅ GitHub Actions (`deploy.yml`)
-- Configured AWS credentials using GitHub Secrets
-- Automatically runs on `push` or `tag` to `feature/assignment-3`
-- Executes `terraform init`, `plan`, and `apply` to create infra
-- Uses `curl` to validate app is live on port 80 via EC2 public IP
-
----
-
-## 🚀 Deployment Workflow
-
-### 📂 Trigger
-The workflow is triggered on `git push` to the `feature/assignment-3` branch.
-
-### 🧩 Steps in `.github/workflows/deploy.yml`
-1. **Checkout Code**
-2. **Setup Terraform**
-3. **Configure AWS Credentials**
-4. **Terraform Init**
-5. **Terraform Init**
-6. **Terraform apply -var-files="stage.tfvars(dev.tfvars)"**
-7. **Check App Health via curl & Browser**
-8. **Finish**
-
----
-
-## 🧪 Health Check
-
-After deployment, the workflow:
-- Retrieves EC2 instance public IP (tagged `AppServer-*`)
-- Executes a `curl` request on `http://<EC2_IP>`
-- Fails the workflow if app doesn't respond after retries
-
----
-
-## 📦 Log Archival
-
-- EC2 runs a `user_data.sh` script that compresses and uploads logs to the S3 bucket.
-- Bucket name and file path are passed through Terraform variables and instance profile.
+| Technology        | Purpose                              |
+|-------------------|--------------------------------------|
+| Terraform         | Infrastructure as Code (IaC)         |
+| AWS               | Cloud Services                       |
+| GitHub Actions    | Continuous Integration/Deployment    |
+| Spring Boot (Java)| Web Application                      |
+| Amazon S3         | Log Storage & Lifecycle Management   |
 
 ## 🧾 Folder Structure
 techeazy-assignment/
@@ -273,35 +237,6 @@ techeazy-assignment/
 |-----------------------|------------------------------|
 | `AWS_ACCESS_KEY_ID`   | Access key for AWS IAM user  |
 | `AWS_SECRET_ACCESS_KEY` | Secret key for AWS IAM user|
-
-## 🧹 Cleanup
-
-To avoid AWS charges, run:
-
-`terraform destroy`
-
-**🙌 Author**        
-
-  Nikki Goyal
-  Techeazy AWS Internship | June 2025
-
-### 🚀 DevOps Internship – Assignment 3  
-## Terraform Infra + Java App EC2 Deployment + GitHub Actions CI/CD + S3 Logging
-
-## ✅ Objective
-
-Automate provisioning of AWS infrastructure using **Terraform**, deploy a **Spring Boot** application to **EC2**, set up a **CI/CD pipeline with GitHub Actions**, and configure **S3 bucket log archival** with lifecycle rules.
-
-
-## 🧰 Tech Stack
-
-| Technology        | Purpose                              |
-|-------------------|--------------------------------------|
-| Terraform         | Infrastructure as Code (IaC)         |
-| AWS               | Cloud Services                       |
-| GitHub Actions    | Continuous Integration/Deployment    |
-| Spring Boot (Java)| Web Application                      |
-| Amazon S3         | Log Storage & Lifecycle Management   |
 
 
 ## 🏗️ Infrastructure Overview
@@ -360,6 +295,16 @@ Runs on **push** to `feature/assignment-3` branch
 - 🕵️‍♂️ **Smart wait** – waits for EC2 readiness via S3 signal  
 - ⚙️ **Dynamic IP detection** – no hardcoding
 
+## 🧩 Steps in `.github/workflows/deploy.yml`
+1. **Checkout Code**
+2. **Setup Terraform**
+3. **Configure AWS Credentials**
+4. **Terraform Init**
+5. **Terraform Init**
+6. **Terraform apply -var-files="stage.tfvars(dev.tfvars)"**
+7. **Check App Health via curl & Browser**
+8. **Finish**
+
 ## 📸 Screenshots & Proofs
 
 ### 1️⃣ EC2 Instance Running  
@@ -402,6 +347,12 @@ Runs on **push** to `feature/assignment-3` branch
 `git add .`
 `git commit -m "✅ Final Assignment 3: Full Terraform Infra + Java EC2 App + GitHub Actions CI/CD + S3 Logs"`
 `git push origin feature/assignment-3`
+
+## 🧹 Cleanup
+
+To avoid AWS charges, run:
+
+`terraform destroy`
 
 ## ✅ Final Output Summary
 
