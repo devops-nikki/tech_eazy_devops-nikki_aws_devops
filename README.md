@@ -68,7 +68,8 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
 
      -terraform destroy
 
-# ✅ Techeazy AWS Internship - DevOps Assignment 2 – IAM, S3, Log Upload (Completed)
+# ✅ Techeazy AWS Internship - DevOps Assignment 2 
+#  IAM, S3, Log Upload (Completed)
 
 ## 📌 Overview
 
