@@ -16,25 +16,24 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
 
 1. **Clone this repo:**
    
-   git clone https://github.com/devops-nikki/tech_eazy_devops-nikki_aws_devops.git   
-   cd tech_eazy_devops-nikki_aws_devops
+   `git clone https://github.com/devops-nikki/tech_eazy_devops-nikki_aws_devops.git`   
+   `cd tech_eazy_devops-nikki_aws_devops`
 
 2. **Set your AWS credentials as environment variables:**
 
    `-export AWS_ACCESS_KEY_ID=your_key`
 
-   -export AWS_SECRET_ACCESS_KEY=your_secret_key
+   `-export AWS_SECRET_ACCESS_KEY=your_secret_key`
 
 
 3. **Initialize and apply Terraform:**
 
-   -terraform init
+   `terraform init`
+   `terraform validate`
    
-   -terraform validate
+   `terraform plan`
    
-   -terraform plan
-   
-   -terraform apply
+   `terraform apply`
 
 
 4. **Wait a few minutes until the app is reachable on the EC2 public IP via port 80.**
@@ -66,7 +65,8 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
    
    **✅ After all the setup don't forget to run:**(for cost-saving)
 
-     -terraform destroy
+     `terraform destroy`
+
 
 # ✅ Techeazy AWS Internship - DevOps Assignment 2 
 #  IAM, S3, Log Upload (Completed)
@@ -124,25 +124,25 @@ This assignment automates secure log archival from EC2 instances to a private Am
 
 ## 🚀 How to Deploy
 
--terraform init
+ `terraform init`
 
--terraform validate
+`terraform validate`
 
--terraform plan
+`terraform plan`
 
--terraform apply -var-file="your .tfvars file"
+`terraform apply -var-file="your.tfvars file"`
 
 ### Files Modified
 
- -main.tf
+ `main.tf`
 
- -s3_bucket.tf
+ `s3_bucket.tf`
 
- -user_data.sh.tftpl
+ `user_data.sh.tftpl`
 
- -dev.tfvars
+ `dev.tfvars`
 
- -README.md
+ `README.md`
 
 ## 📸 **Deployment Screenshots**
 
@@ -171,7 +171,7 @@ This assignment automates secure log archival from EC2 instances to a private Am
 
 ## ✅ After all the setup Done - don't forget to run:(for cost-saving)
 
- -terraform destroy
+ `terraform destroy`
 
 ## Collaborators Invited
 All teammates and mentors have been added as collaborators to the GitHub repository.
