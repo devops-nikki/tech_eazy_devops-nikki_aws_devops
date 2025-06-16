@@ -32,9 +32,9 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
    
    `terraform validate`
    
-   `terraform plan `
+   `terraform plan`
 
-   `terraform apply -var-file="your .tfvars files"`
+   `terraform apply`
 
 
 4. **Wait a few minutes until the app is reachable on the EC2 public IP via port 80.**
@@ -267,12 +267,20 @@ Upon launch, EC2 performs:
 4. Starts the app on **port 80**
 5. Uploads logs:
    - `/var/log/cloud-init.log` → `s3://<log_s3_bucket_name>/system_logs/cloud-init-log`
-   - `/var/log/my-app.log` → `s3://<log-bucket>/app_logs/my-app-log`
+   - `/var/log/my-app.log` → `s3://<log_s3_bucket_name>/app_logs/my-app-log`
 6. Signals app readiness by uploading `app_ready.txt` to:
    - `s3://<log_s3_bucket_name>/status/app_ready.txt`
 7. Auto-shutdown after defined time (`shutdown_after_minutes`)
 
 ---
+
+## 📤 Final Git Commit
+
+`git add .`
+
+`git commit -m "✅ Final Assignment 3: Full Terraform Infra + Java EC2 App + GitHub Actions CI/CD + S3 Logs"`
+
+`git push origin feature/assignment-3`
 
 ## 🔁 GitHub Actions CI/CD Workflow
 
@@ -344,14 +352,8 @@ Runs on **push** to `feature/assignment-3` branch
 📍 `http://<ec2-public-ip>` → Returns **HTTP 200**
 
    ![EC2 deployed](Output_ss/java_app_3.png)
+
 ---
-## 📤 Final Git Commit
-
-`git add .`
-
-`git commit -m "✅ Final Assignment 3: Full Terraform Infra + Java EC2 App + GitHub Actions CI/CD + S3 Logs"`
-
-`git push origin feature/assignment-3`
 
 ## 🧹 Cleanup
 
