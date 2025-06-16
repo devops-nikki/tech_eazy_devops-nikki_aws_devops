@@ -65,6 +65,7 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
   ![Java App_browser_Output](Output_ss/ec2-deployed.png)
    
    **After all the setup don't forget to run:**(for cost-saving)
+   
      terraform destroy
 
 
