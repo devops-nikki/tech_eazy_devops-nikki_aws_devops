@@ -21,9 +21,9 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
 
 2. **Set your AWS credentials as environment variables:**
 
-   `export AWS_ACCESS_KEY_ID=your_key`
+   `-export AWS_ACCESS_KEY_ID=your_key`
 
-   `export AWS_SECRET_ACCESS_KEY=your_secret_key`
+   `-export AWS_SECRET_ACCESS_KEY=your_secret_key`
 
 
 3. **Initialize and apply Terraform:**
@@ -33,12 +33,10 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
    `terraform validate`
    
    `terraform plan`
-
+   
    `terraform apply`
 
-
 4. **Wait a few minutes until the app is reachable on the EC2 public IP via port 80.**
-
 
 5. **Test API endpoints using Postman:**
 
@@ -65,7 +63,7 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
   ![Java App_browser_Output](Output_ss/ec2-deployed.png)
    
  **✅ After all the setup don't forget to run:**(for cost-saving)
-    
+ 
    `terraform destroy`
 
 # ✅ Techeazy AWS Internship -DevOps Assignment 2 
@@ -174,7 +172,7 @@ All teammates and mentors have been added as collaborators to the GitHub reposit
 Let me know if you'd like to merge the PR or wait for mentor approval.
 Thank you for reviewing! 😊
 
-**🙌 Author**        
+🙌 **Author**
 
   Nikki Goyal
   Techeazy AWS Internship | June 2025
