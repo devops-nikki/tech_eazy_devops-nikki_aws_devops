@@ -1,4 +1,5 @@
-# Techeazy AWS Internship-DEVOPS ASSIGNMENT-1 – EC2 Java App Deployment with Terraform
+# Techeazy AWS Internship-DEVOPS ASSIGNMENT-1 
+#  EC2 Java App Deployment with Terraform
 
 ## 📌 Overview
 
@@ -15,31 +16,31 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
 
 1. **Clone this repo:**
    
-   bash``
    git clone https://github.com/devops-nikki/tech_eazy_devops-nikki_aws_devops.git   
    cd tech_eazy_devops-nikki_aws_devops
 
 2. **Set your AWS credentials as environment variables:**
 
-   export AWS_ACCESS_KEY_ID=your_key
+   -export AWS_ACCESS_KEY_ID=your_key
 
-   export AWS_SECRET_ACCESS_KEY=your_secret_key
+   -export AWS_SECRET_ACCESS_KEY=your_secret_key
 
 
 3. **Initialize and apply Terraform:**
 
-   terraform init
-   terraform validate
-   terraform plan
-   terraform apply
+   -terraform init
+   
+   -terraform validate
+   
+   -terraform plan
+   
+   -terraform apply
 
 
 4. **Wait a few minutes until the app is reachable on the EC2 public IP via port 80.**
 
 
 5. **Test API endpoints using Postman:**
-
-   -Import the .json file from the resources folder
 
    -Update the base URL with your EC2 public IP
 
@@ -64,9 +65,10 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
   ![Java App_browser_Output](Output_ss/ec2-deployed.png)
    
    **✅ After all the setup don't forget to run:**(for cost-saving)
-     terraform destroy
 
-# ✅ Techeazy AWS Internship -DevOps Assignment 2 – IAM, S3, Log Upload (Completed)
+     -terraform destroy
+
+# ✅ Techeazy AWS Internship - DevOps Assignment 2 – IAM, S3, Log Upload (Completed)
 
 ## 📌 Overview
 
@@ -84,9 +86,9 @@ This assignment automates secure log archival from EC2 instances to a private Am
 ### 🔐 IAM Roles
 
 - Created two custom IAM policies:
-  - `ReadOnlyAccessToS3`
-  - `WriteOnlyAccessToS3`
-- Attached policies to respective roles using IAM Instance Profiles for **least privilege** access.
+  -ReadOnlyAccessToS3
+  -WriteOnlyAccessToS3`
+  -Attached policies to respective roles using IAM Instance Profiles for **least privilege** access.
 
 ### 🪣 S3 Bucket Setup
 
@@ -97,7 +99,7 @@ This assignment automates secure log archival from EC2 instances to a private Am
 ### 💻 EC2 Log Upload Automation
 
 - Captured logs from `/var/log/my-app.log` 
-- uploaded to S3 on **shutdown**
+- Uploaded to S3 on **shutdown**
 - Fully automated using:
   - Bash script: `user_data.sh.tf.tpl`
   - IAM write role
@@ -121,13 +123,16 @@ This assignment automates secure log archival from EC2 instances to a private Am
 
 ## 🚀 How to Deploy
 
-``bash
-terraform init
-terraform validate
-terraform plan
-terraform apply -var-file="your .tfvars file"
+-terraform init
+
+-terraform validate
+
+-terraform plan
+
+-terraform apply -var-file="your .tfvars file"
 
 ### Files Modified
+
 -main.tf
 -s3_bucket.tf
 -user_data.sh.tftpl
@@ -159,14 +164,14 @@ terraform apply -var-file="your .tfvars file"
 ![Verify Role A](Output_ss/verify_role_a.png)
 ---
 
-✅  **After all the setup Done - don't forget to run:(for cost-saving)**
+## ✅ After all the setup Done - don't forget to run:(for cost-saving)
 
-     terraform destroy
+ -terraform destroy
 
-## 🧑‍🤝‍🧑 **Collaborators Invited-**
+## Collaborators Invited
 All teammates and mentors have been added as collaborators to the GitHub repository.
 
-## 🔁 **Pull Request Notes**
+## 🔁Pull Request Notes
 
 Let me know if you'd like to merge the PR or wait for mentor approval.
 Thank you for reviewing! 😊
