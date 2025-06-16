@@ -135,19 +135,25 @@ terraform apply -var-file="your .tfvars file"
 ## 📸 **Deployment Screenshots**
 
 ### ✅ Deployment Output
+
 ![Successfully Deployed](Output_ss/public_ip.png)
 
 ### ✅ EC2 Instances Running
+
 ![Running Instances](Output_ss/ec2.png)
 
 ### ✅ S3 Bucket Created
+
 ![S3 Bucket](Output_ss/s3_bucket.png)
 
 ### ✅ Logs in S3
-![App Logs](Output_ss/app_logs.png)  
+
+![App Logs](Output_ss/app_logs.png)
+
 ![System Logs](Output_ss/system_logs.png)
 
 ### ✅ IAM Role Verification
+
 ![Verify Role A](Output_ss/verify_role_a.png)
 ---
 
