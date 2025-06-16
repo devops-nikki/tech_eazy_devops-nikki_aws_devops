@@ -121,7 +121,7 @@ This assignment automates secure log archival from EC2 instances to a private Am
 
 ## 🚀 How to Deploy
 
-```bash
+``bash
 terraform init
 terraform apply -var-file="your .tfvars file"
 
