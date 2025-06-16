@@ -1,4 +1,5 @@
-# Techeazy AWS Internship-DEVOPS ASSIGNMENT-1 – EC2 Java App Deployment with Terraform
+# Techeazy AWS Internship-DEVOPS ASSIGNMENT-1 
+#  EC2 Java App Deployment with Terraform
 
 ## 📌 Overview
 
@@ -15,31 +16,31 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
 
 1. **Clone this repo:**
    
-   bash``
-   git clone https://github.com/devops-nikki/tech_eazy_devops-nikki_aws_devops.git   
-   cd tech_eazy_devops-nikki_aws_devops
+   `git clone https://github.com/devops-nikki/tech_eazy_devops-nikki_aws_devops.git`   
+   `cd tech_eazy_devops-nikki_aws_devops`
 
 2. **Set your AWS credentials as environment variables:**
 
-   export AWS_ACCESS_KEY_ID=your_key
+   `export AWS_ACCESS_KEY_ID=your_key`
 
-   export AWS_SECRET_ACCESS_KEY=your_secret_key
+   `export AWS_SECRET_ACCESS_KEY=your_secret_key`
 
 
 3. **Initialize and apply Terraform:**
 
-   terraform init
-   terraform validate
-   terraform plan -var-file="your .tfvars files"
-   terraform apply -var-file="your .tfvars files"
+   `terraform init`
+   
+   `terraform validate`
+   
+   `terraform plan -var-file="your .tfvars files"`
+
+   `terraform apply -var-file="your .tfvars files"`
 
 
 4. **Wait a few minutes until the app is reachable on the EC2 public IP via port 80.**
 
 
 5. **Test API endpoints using Postman:**
-
-   -Import the .json file from the resources folder
 
    -Update the base URL with your EC2 public IP
 
@@ -64,9 +65,11 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
   ![Java App_browser_Output](Output_ss/ec2-deployed.png)
    
    **✅ After all the setup don't forget to run:**(for cost-saving)
-     terraform destroy
+    
+     `terraform destroy`
 
-# ✅ Techeazy AWS Internship -DevOps Assignment 2 – IAM, S3, Log Upload (Completed)
+# ✅ Techeazy AWS Internship -DevOps Assignment 2 
+#    IAM, S3, Log Upload (Completed)
 
 ## 📌 Overview
 
@@ -121,52 +124,47 @@ This assignment automates secure log archival from EC2 instances to a private Am
 
 ## 🚀 How to Deploy
 
-```bash
-terraform init
-terraform apply -var-file="your .tfvars file"
+`terraform init`
 
-📁 Files Modified
-main.tf
-s3_bucket.tf
-user_data.sh.tftpl
-terraform.tfvars
-README.md
+`terraform validate`
+
+`terraform plan -var-file="your .tfvars file"`
+
+`terraform apply -var-file="your .tfvars file"`
+
+# 📁 Files Modified
+
+`main.tf`
+
+`s3_bucket.tf`
+
+`user_data.sh.tftpl`
+
+`dev.tfvars`
+
+`README.md`
 
 ## 🖼️ Deployment Screenshots
 
 ### ✅ Deployment Output
-> `"Successfully Deployed"`
-EC2 deployed (output_ss/public_ip.png)
+
+![EC2 deployed](Output_ss/public_ip.png)
 
 ### ✅ EC2 Instances Running
-![EC2 Instances](output_ss/ec2.png)
+![EC2 Instances](Output_ss/ec2.png)
 
 ### ✅ S3 bucket created
-![S3_bucket](output_ss/s3_bucket.png)
+![S3_bucket](Output_ss/s3_bucket.png)
 
 ### ✅ Logs in S3
-- `/app_logs/` → (output_ss/app_logs.png)
-- `/system_logs/` → (output_ss/system_logs.png)
+![/app_logs](Output_ss/app_logs.png)
+![/system_logs](Output_ss/system_logs.png)
 
 ### ✅ verify role_a
--`verify_role_a`  → (output_ss/verify_role_a.png)
----
-
-## 🚀 How to Deploy
-
-```bash
-terraform init
-terraform apply -var-file="your .tfvars file"
-
-📁 Files Modified
-main.tf
-s3_bucket.tf
-user_data.sh.tftpl
-terraform.tfvars
-README.md
+![verify role A](Output_ss/verify_role_a.png)
 
  **✅ After all the setup don't forget to run:**(for cost-saving)
-     terraform destroy
+     `terraform destroy`
 
 ## 🧑‍🤝‍🧑 Collaborators Invited-
 All teammates and mentors have been added as collaborators to the GitHub repository.
@@ -176,7 +174,7 @@ All teammates and mentors have been added as collaborators to the GitHub reposit
 Let me know if you'd like to merge the PR or wait for mentor approval.
 Thank you for reviewing! 😊
 
-# 📦 Assignment 3 – CI/CD Deployment with GitHub Actions, Custom VPC, EC2 & S3
+### Assignment 3 – CI/CD Deployment with GitHub Actions, Custom VPC, EC2 & S3
 
 ## 📁 Objective
 
@@ -186,7 +184,6 @@ Automate infrastructure provisioning and deployment of a Java web application us
 - **Health check** for the deployed application
 - **Log archival** from EC2 to S3
 
----
 
 ## 🛠️ What Was Done
 
@@ -194,7 +191,7 @@ Automate infrastructure provisioning and deployment of a Java web application us
 - Created a **custom VPC** with public subnet
 - Launched an **EC2 instance** inside the VPC
 - Attached **IAM instance profile (Role B)** to allow S3 upload
-- Created an **S3 bucket** to store logs
+- Created an **Private S3 bucket** to store logs
 - EC2 user data script uploads application logs to S3 during boot
 
 ### ✅ GitHub Actions (`deploy.yml`)
@@ -214,10 +211,11 @@ The workflow is triggered on `git push` to the `feature/assignment-3` branch.
 1. **Checkout Code**
 2. **Setup Terraform**
 3. **Configure AWS Credentials**
-4. **Terraform Init **
-5. **Terraform apply -var-files="stage.tfvars(dev.tfvars)"
-6. **Check App Health via curl**
-7. **Finish**
+4. **Terraform Init**
+5. **Terraform Init**
+6. **Terraform apply -var-files="stage.tfvars(dev.tfvars)"**
+7. **Check App Health via curl & Browser**
+8. **Finish**
 
 ---
 
@@ -280,15 +278,14 @@ techeazy-assignment/
 
 To avoid AWS charges, run:
 
-```bash
-terraform destroy
+`terraform destroy`
 
 **🙌 Author**        
 
   Nikki Goyal
   Techeazy AWS Internship | June 2025
 
-# 🚀 DevOps Internship – Assignment 3  
+### 🚀 DevOps Internship – Assignment 3  
 ## Terraform Infra + Java App EC2 Deployment + GitHub Actions CI/CD + S3 Logging
 
 ## ✅ Objective
@@ -331,10 +328,10 @@ Upon launch, EC2 performs:
 3. Builds the app using `mvn clean install`
 4. Starts the app on **port 80**
 5. Uploads logs:
-   - `/var/log/cloud-init.log` → `s3://<log-bucket>/system_logs/`
-   - `/var/log/my-app.log` → `s3://<log-bucket>/app_logs/`
+   - `/var/log/cloud-init.log` → `s3://<log_s3_bucket_name>/system_logs/cloud-init-log`
+   - `/var/log/my-app.log` → `s3://<log-bucket>/app_logs/my-app-log`
 6. Signals app readiness by uploading `app_ready.txt` to:
-   - `s3://<log-bucket>/status/app_ready.txt`
+   - `s3://<log_s3_bucket_name>/status/app_ready.txt`
 7. Auto-shutdown after defined time (`shutdown_after_minutes`)
 
 ---
@@ -368,7 +365,7 @@ Runs on **push** to `feature/assignment-3` branch
 ### 1️⃣ EC2 Instance Running  
 ✅ Java app successfully launched an EC2 instance.
 
-   EC2 deployed (Output_ss/ec2_vpc_run.png)
+   ![EC2 deployed](Output_ss/ec2_vpc_run.png)
 
 ### 2️⃣ Logs in S3  
 ✅ Logs like `cloud-init.log`, `my-app.log`, and `app_ready.txt` found under correct prefixes.
@@ -379,28 +376,32 @@ Runs on **push** to `feature/assignment-3` branch
    
 
    **Lists of logs in s3 bucket**
-     logs_lists (Output_ss/s3_logs.png)
+    ![logs_lists](Output_ss/s3_logs.png)
 
    **App_logs**
-    app_logs (Output_ss/auto_app_logs.png)
+    ![app_logs](Output_ss/auto_app_logs.png)
 
    **System_logs**
-    sytem_logs (Output_ss/auto_system_logs.png)
-
-
+    ![sytem_logs](Output_ss/auto_system_logs.png)
 
 
 ### 3️⃣ GitHub Actions – CI/CD  
 ✅ All steps executed, including waiting for readiness and validating the app endpoint.
 
-     EC2 deployed (Output_ss/gitflow.png)
-     EC2 deployed (Output_ss/workflow_run.png)
+   ![Successfull_workflow](Output_ss/gitflow.png)
+  ![WorkFlow](Output_ss/workflow_run.png)
 
 ### 4️⃣ Spring Boot App Live on EC2  
 ✅ Application accessible via public IP over **port 80**  
 📍 `http://<ec2-public-ip>` → Returns **HTTP 200**
-     EC2 deployed (Output_ss/java_app_3.png)
+
+   ![EC2 deployed](Output_ss/java_app_3.png)
 ---
+## 📤 Final Git Commit
+
+`git add .`
+`git commit -m "✅ Final Assignment 3: Full Terraform Infra + Java EC2 App + GitHub Actions CI/CD + S3 Logs"`
+`git push origin feature/assignment-3`
 
 ## ✅ Final Output Summary
 
@@ -412,20 +413,9 @@ Runs on **push** to `feature/assignment-3` branch
 | Terraform Apply                | ✅ Success                      |
 | GitHub Actions CI/CD Pipeline | ✅ All steps passed             |
 
----
-
 ## ✨ Author
 
 👩‍💻 **Nikki Goyal**  
 🎓 Role: AWS DevOps Intern – TechEazy Consulting  
 💡 Skills: AWS | Terraform | GitHub Actions | DevOps | CI/CD | Java | S3  
 🔗 LinkedIn: [linkedin.com/in/nikki-goyal-devops](https://www.linkedin.com/in/nikki-goyal-devops)
-
----
-
-## 📤 Final Git Commit
-
-```bash
-git add .
-git commit -m "✅ Final Assignment 3: Full Terraform Infra + Java EC2 App + GitHub Actions CI/CD + S3 Logs"
-git push origin feature/assignment-3
