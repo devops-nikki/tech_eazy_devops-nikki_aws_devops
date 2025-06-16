@@ -135,20 +135,20 @@ README.md
 ## 🖼️ **Deployment Screenshots**
 
 ### ✅ **Deployment Output**
-![Successfully Deployed] (Output_ss/public_ip.png)
+![Successfully Deployed](Output_ss/public_ip.png)
 
 ### ✅ **EC2 Instances Running**
-![Running Instances] (Output_ss/ec2.png)
+![Running Instances](Output_ss/ec2.png)
 
 ### ✅ **S3 bucket created**
-![S3_bucket] (Output_ss/s3_bucket.png)
+![S3_bucket](Output_ss/s3_bucket.png)
 
 ### ✅ **Logs in S3**
-![/app_logs/] → (Output_ss/app_logs.png)
-![/system_logs/] → (Output_ss/system_logs.png)
+![/app_logs/](Output_ss/app_logs.png)
+![/system_logs/](Output_ss/system_logs.png)
 
 ### ✅ **verify role_a**
-![verify_role_a]  → (Output_ss/verify_role_a.png)
+![verify_role_a](Output_ss/verify_role_a.png)
 ---
 
 ## 🚀 **How to Deploy**
