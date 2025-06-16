@@ -197,6 +197,7 @@ Automate provisioning of AWS infrastructure using **Terraform**, deploy a **Spri
 | Spring Boot (Java)| Web Application                      |
 | Amazon S3         | Log Storage & Lifecycle Management   |
 
+```md
 ## 🧾 Folder Structure
 techeazy-assignment/
 ├── Output_ss/
