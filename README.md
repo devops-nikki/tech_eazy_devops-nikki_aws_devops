@@ -29,8 +29,11 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
 3. **Initialize and apply Terraform:**
 
    terraform init
+   
    terraform validate
+   
    terraform plan
+   
    terraform apply
 
 
