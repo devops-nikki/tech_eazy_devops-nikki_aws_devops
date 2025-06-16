@@ -125,29 +125,29 @@ This assignment automates secure log archival from EC2 instances to a private Am
 terraform init
 terraform apply -var-file="your .tfvars file"
 
-📁 Files Modified
-main.tf
-s3_bucket.tf
-user_data.sh.tftpl
-terraform.tfvars
-README.md
+### Files Modified
+-main.tf
+-s3_bucket.tf
+-user_data.sh.tftpl
+-terraform.tfvars
+-README.md
 
 ## 🖼️ **Deployment Screenshots**
 
-### ✅ **Deployment Output**
+**Deployment Output**
 ![Successfully Deployed](Output_ss/public_ip.png)
 
-### ✅ **EC2 Instances Running**
+**EC2 Instances Running**
 ![Running Instances](Output_ss/ec2.png)
 
-### ✅ **S3 bucket created**
+**S3 bucket created**
 ![S3_bucket](Output_ss/s3_bucket.png)
 
-### ✅ **Logs in S3**
+**Logs in S3**
 ![/app_logs/](Output_ss/app_logs.png)
 ![/system_logs/](Output_ss/system_logs.png)
 
-### ✅ **verify role_a**
+**verify role_a**
 ![verify_role_a](Output_ss/verify_role_a.png)
 ---
 
@@ -157,7 +157,7 @@ README.md
 terraform init
 terraform apply -var-file="your .tfvars file"
 
-📁 **Files Modified**
+**Files Modified**
 main.tf
 s3_bucket.tf
 user_data.sh.tftpl
