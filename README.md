@@ -303,7 +303,7 @@ Runs on **push** to `feature/assignment-3` branch
 2. **Setup Terraform**
 3. **Configure AWS Credentials**
 4. **Terraform Init**
-5. **Terraform Init**
+5. **Terraform Plan -var-files="stage.tfvars(dev.tfvars)"**
 6. **Terraform apply -var-files="stage.tfvars(dev.tfvars)"**
 7. **Check App Health via curl & Browser**
 8. **Finish**
