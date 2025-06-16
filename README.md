@@ -32,7 +32,7 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
    
    `terraform validate`
    
-   `terraform plan -var-file="your .tfvars files"`
+   `terraform plan `
 
    `terraform apply -var-file="your .tfvars files"`
 
