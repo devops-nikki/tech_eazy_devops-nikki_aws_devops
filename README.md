@@ -21,9 +21,9 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
 
 2. **Set your AWS credentials as environment variables:**
 
-   `export AWS_ACCESS_KEY_ID=your_key`
+   `-export AWS_ACCESS_KEY_ID=your_key`
 
-   `export AWS_SECRET_ACCESS_KEY=your_secret_key`
+   `-export AWS_SECRET_ACCESS_KEY=your_secret_key`
 
 
 3. **Initialize and apply Terraform:**
@@ -34,7 +34,7 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
    
    `terraform plan`
    
-   `terraform apply=your.tfvars file`
+   `terraform apply`
 
 
 4. **Wait a few minutes until the app is reachable on the EC2 public IP via port 80.**
@@ -61,14 +61,14 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
 
    ![Java App Output](Output_ss/postman_.png)
 
-   **JAVA App deployment Through Browser:**
+   **✅ JAVA App deployment Through Browser:**
   ![Java App_browser_Output](Output_ss/ec2-deployed.png)
    
-   **After all the setup don't forget to run:**(for cost-saving)
-   
+   **✅ After all the setup don't forget to run:**(for cost-saving)
+
      `terraform destroy`
 
-**🙌 Author**
+🙌 **Author**
 
   Nikki Goyal
   Techeazy AWS Internship | June 2025
