@@ -21,7 +21,7 @@ This project automates the deployment of a Java 21 application on an AWS EC2 ins
 
 2. **Set your AWS credentials as environment variables:**
 
-   -export AWS_ACCESS_KEY_ID=your_key
+   `-export AWS_ACCESS_KEY_ID=your_key`
 
    -export AWS_SECRET_ACCESS_KEY=your_secret_key
 
@@ -134,11 +134,15 @@ This assignment automates secure log archival from EC2 instances to a private Am
 
 ### Files Modified
 
--main.tf
--s3_bucket.tf
--user_data.sh.tftpl
--terraform.tfvars
--README.md
+ -main.tf
+
+ -s3_bucket.tf
+
+ -user_data.sh.tftpl
+
+ -dev.tfvars
+
+ -README.md
 
 ## 📸 **Deployment Screenshots**
 
