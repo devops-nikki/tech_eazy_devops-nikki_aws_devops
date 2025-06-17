@@ -28,10 +28,6 @@ sleep 120
 aws s3 cp /var/log/cloud-init.log s3://${log_s3_bucket_name}/system_logs/cloud-init.log
 aws s3 cp /var/log/my-app.log s3://${log_s3_bucket_name}/app_logs/my-app.log
 
-# Signal app readiness for GitHub Actions
-echo "Application is ready" > /home/ubuntu/app_ready.txt
-aws s3 cp /home/ubuntu/app_ready.txt s3:///${log_s3_bucket_name}/status/app_ready.txt
-
 # Auto-shutdown
 sudo shutdown -h +$(shutdown_after_minutess)
 
