@@ -16,4 +16,3 @@ output "iam_role_a_arn" {
 output "iam_role_b_arn" {
   description = "ARN of IAM Role B (attached to EC2 instance)"
   value       = aws_iam_role.role_b_uploader.arn
-}
