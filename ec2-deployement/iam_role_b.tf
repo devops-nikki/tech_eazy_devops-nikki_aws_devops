@@ -35,3 +35,4 @@ resource "aws_iam_policy" "uploadonly_policy" {
 resource "aws_iam_role_policy_attachment" "uploadonly_attach" {
   role       = aws_iam_role.role_b_uploader.name
   policy_arn = aws_iam_policy.uploadonly_policy.arn
+}
