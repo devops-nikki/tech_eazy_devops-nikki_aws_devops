@@ -1,4 +1,5 @@
 resource "aws_iam_role" "role_b_uploader" {
+  count = var.stage =="dev" ? 1:0
   name = "uploadonly_s3_role"
 
   assume_role_policy = jsonencode({
@@ -14,6 +15,7 @@ resource "aws_iam_role" "role_b_uploader" {
 }
 
 resource "aws_iam_policy" "uploadonly_policy" {
+  count = var.stage =="dev" ? 1:0
   name        = "uploadonly_s3_policy"
   description = "Allows write-only access to S3"
 
@@ -23,16 +25,25 @@ resource "aws_iam_policy" "uploadonly_policy" {
       {
         Action = [
           "s3:PutObject",
-          "s3:CreateBucket"
+          "s3:CreateBucket",
+          "s3:GetObject",
+          "s3:ListBucket"
         ],
         Effect   = "Allow",
-        Resource = ["arn:aws:s3:::${var.log_s3_bucket_name}", "arn:aws:s3:::${var.log_s3_bucket_name}/*"]
+        Resource = ["arn:aws:s3:::${var.log_s3_bucket_name}", 
+                    "arn:aws:s3:::${var.log_s3_bucket_name}/*"]
       }
     ]
   })
 }
 
 resource "aws_iam_role_policy_attachment" "uploadonly_attach" {
-  role       = aws_iam_role.role_b_uploader.name
-  policy_arn = aws_iam_policy.uploadonly_policy.arn
+  count = var.stage =="dev" ? 1:0
+  role       = aws_iam_role.role_b_uploader[0].name
+  policy_arn = aws_iam_policy.uploadonly_policy[0].arn
+}
+
+data "aws_iam_role" "role_b_uploader" {
+  count = var.stage =="prod" ? 1:0
+  name = "uploadonly_s3_role"
 }
