@@ -7,7 +7,6 @@ on:
     tags:
       - deploy-dev
       - deploy-prod
-
   workflow_dispatch:
     inputs:
       stage:
@@ -27,15 +26,14 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     env:
       SELECTED_STAGE: ${{ github.event.inputs.stage || (github.ref_name == 'deploy-prod' && 'prod') || 'dev' }}
 
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Configure AWS credentials
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -59,19 +57,19 @@ jobs:
               -var-file=prod.tfvars \
               -var="github_private_repo=https://github.com/${{ secrets.PRIVATE_REPO }}" \
               -var="github_token=${{secrets.PRIVATE_REPO_TOKEN}}"
-              -var="stage=prod"
+              -var="stage=prod" \
           else
             terraform apply -auto-approve \
               -var-file=dev.tfvars \
+              -var="stage=dev" \
               -var="github_repo_url=https://github.com/${{ secrets.PUBLIC_REPO }}" \
-              -var="stage=dev"
           fi
 
-      - name: Get EC2 Public IP 
+      - name: Fetch EC2 IP and S3 Bucket
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: |
           echo "INSTANCE_IP=$(terraform output -raw app_ec2_public_ip)" >> $GITHUB_ENV
-        
+          echo "S3_BUCKET=$(terraform output -raw s3_log_bucket)" >> $GITHUB_ENV
 
       - name: Wait for app_ready.txt
         run: |
@@ -82,22 +80,21 @@ jobs:
               break
             else
               echo "Attempt $i: app_ready.txt not found... retrying in 10s"
-              sleep 120
-            fi
-          done
-
-      - name: Validate App Running
-        run: |
-          echo "Validating http://${INSTANCE_IP}"
-          for i in {1..10}; do
-            STATUS=$(curl -o /dev/null -s -w "%{http_code}" http://${INSTANCE_IP})
-            if [[ "$STATUS" == "200" ]]; then
-              echo "✅ App is healthy (HTTP 200)"
-              exit 0
-            else
-              echo "Attempt $i: got HTTP $STATUS"
               sleep 10
             fi
           done
-          echo "❌ App failed health check"
+
+      - name: Validate App is Running
+        run: |
+          for i in {1..10}; do
+            STATUS=$(curl -o /dev/null -s -w "%{http_code}" http://${INSTANCE_IP})
+            if [[ "$STATUS" == "200" ]]; then
+              echo "✅ App is healthy"
+              exit 0
+            else
+              echo "❌ App returned $STATUS... retrying"
+              sleep 10
+            fi
+          done
+          echo "❌ App health check failed"
           exit 1
