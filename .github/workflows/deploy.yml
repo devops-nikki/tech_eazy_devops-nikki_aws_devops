@@ -58,12 +58,12 @@ jobs:
               -var-file=prod.tfvars \
               -var="github_private_repo=https://github.com/${{ secrets.PRIVATE_REPO }}" \
               -var="github_token=${{secrets.PRIVATE_REPO_TOKEN}}" \
-              -var="stage=prod" \
+              -var="stage=prod"
           else
             terraform apply -auto-approve \
               -var-file=dev.tfvars \
               -var="github_repo_url=https://github.com/${{ secrets.PUBLIC_REPO }}" \
-              -var="stage=dev" \
+              -var="stage=dev"
           fi
       - name: Get EC2 Public IP & S3 Bucket Name
         working-directory: ${{ env.TF_WORKING_DIR }}
