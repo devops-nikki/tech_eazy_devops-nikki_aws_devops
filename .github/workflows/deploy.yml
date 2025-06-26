@@ -3,7 +3,7 @@ name: Multi-Stage CI/CD with Workspace and Repo Modes
 on:
   push:
     branches:
-      - feature/assignmrnt-4
+      - feature/assignment-4
     tags:
       - deploy-dev
       - deploy-prod
