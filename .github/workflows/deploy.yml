@@ -56,7 +56,7 @@ jobs:
           if [ "${{ env.SELECTED_STAGE }}" == "prod" ]; then
             terraform apply -auto-approve \
               -var-file=prod.tfvars \
-              -var="github_private_repo=https://github.com/${{ secrets.PRIVATE_REPO }}" \
+              -var="github_private_repo=${{ secrets.PRIVATE_REPO }}" \
               -var="github_token=${{secrets.PRIVATE_REPO_TOKEN}}" \
               -var="stage=prod"
           else
