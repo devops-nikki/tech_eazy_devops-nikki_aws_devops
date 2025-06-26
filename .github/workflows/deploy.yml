@@ -66,11 +66,11 @@ jobs:
               -var="stage=dev"
           fi
 
-      - name: Get EC2 Public IP & S3 Bucket Name
+      - name: Get EC2 Public IP 
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: |
           echo "INSTANCE_IP=$(terraform output -raw app_ec2_public_ip)" >> $GITHUB_ENV
-          echo "S3_BUCKET=$(terraform output -raw s3_log_bucket)" >> $GITHUB_ENV
+        
 
       - name: Wait for app_ready.txt
         run: |
