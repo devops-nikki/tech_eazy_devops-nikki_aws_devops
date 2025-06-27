@@ -1,14 +1,17 @@
 resource "aws_s3_bucket" "log_s3_bucket" {
+  count = var.stage =="dev" ? 1:0
   bucket = var.log_s3_bucket_name
   force_destroy = true
 
   tags = {
     Name = "LogBucket"
+    stage = var.stage
   }
 }
 
 resource "aws_s3_bucket_public_access_block" "log_bucket" {
- bucket = aws_s3_bucket.log_s3_bucket.id
+ count = var.stage =="dev" ? 1:0
+ bucket = aws_s3_bucket.log_s3_bucket[0].id
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -16,7 +19,8 @@ resource "aws_s3_bucket_public_access_block" "log_bucket" {
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "log_lifecycle" {
-  bucket = aws_s3_bucket.log_s3_bucket.id
+  count = var.stage =="dev" ? 1:0
+  bucket = aws_s3_bucket.log_s3_bucket[0].id
 
   rule {
     id     = "delete_logs_after_7_days"
@@ -28,4 +32,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_lifecycle" {
 
     filter {}
   }
+}
+
+# Reuse in prod if already created in dev
+data "aws_s3_bucket" "log_s3_bucket" {
+  count = var.stage =="prod" ? 1:0
+  bucket = var.log_s3_bucket_name
 }

@@ -1,4 +1,5 @@
 resource "aws_iam_role" "role_a_readonly" {
+  count = var.stage =="dev" ? 1:0
   name = "readonly_s3_role"
 
   assume_role_policy = jsonencode({
@@ -14,6 +15,7 @@ resource "aws_iam_role" "role_a_readonly" {
 }
 
 resource "aws_iam_policy" "readonly_policy" {
+  count = var.stage =="dev" ? 1:0
   name        = "readonly_s3_policy"
   description = "Allows read-only access to S3"
 
@@ -26,13 +28,15 @@ resource "aws_iam_policy" "readonly_policy" {
           "s3:ListBucket"
         ],
         Effect   = "Allow",
-        Resource = ["arn:aws:s3:::${var.log_s3_bucket_name}", "arn:aws:s3:::${var.log_s3_bucket_name}/*"]
+        Resource = ["arn:aws:s3:::${var.log_s3_bucket_name}",
+                    "arn:aws:s3:::${var.log_s3_bucket_name}/*"]
       }
     ]
   })
 }
 
 resource "aws_iam_role_policy_attachment" "readonly_attach" {
-  role       = aws_iam_role.role_a_readonly.name
-  policy_arn = aws_iam_policy.readonly_policy.arn
+  count = var.stage =="dev" ? 1:0
+  role       = aws_iam_role.role_a_readonly[0].name
+  policy_arn = aws_iam_policy.readonly_policy[0].arn
 }

@@ -486,3 +486,146 @@ To avoid AWS charges, run:
 🎓 Role: AWS DevOps Intern – TechEazy Consulting  
 💡 Skills: AWS | Terraform | GitHub Actions | DevOps | CI/CD | Java | S3  
 🔗 LinkedIn: [linkedin.com/in/nikki-goyal-devops](https://www.linkedin.com/in/nikki-goyal-devops)
+
+#  🚀 Techeazy AWS Internship – Devops- Assignment 4 
+# 🚀 Multi-Stage Infrastructure Deployment with Terraform & GitHub Actions
+
+This project automates a **multi-stage (dev and prod) deployment** system using:
+
+- 🧱 **Terraform** for provisioning AWS resources  
+- ☁️ **AWS EC2, IAM, S3**  
+- 🤖 **GitHub Actions** for CI/CD  
+- 🔐 Secure integration of both private and public GitHub repositories
+
+---
+
+## 🧩 What This Project Does
+
+- Sets up reusable AWS infrastructure using Terraform
+- Handles both **development** and **production** environments via Terraform workspaces
+- Clones the application source code from:
+  - a **public GitHub repo** for the `dev` stage
+  - a **private GitHub repo** for the `prod` stage
+- Deploys a Java web application on EC2 instance
+- Uploads logs to a **single shared S3 bucket**, organized by stage
+- Performs **health checks** using a status file
+- Automatically shuts down EC2 instance after a configurable time
+
+---
+
+## ⚙️ How It Works
+
+- Terraform provisions:
+  - EC2 instance with startup script (user_data)
+  - IAM Roles a & b with instance profile
+  - Shared **S3 bucket** (created once and reused by both stages)
+- GitHub Actions:
+  - Handles CI/CD for both stages
+  - Uploads logs from EC2 to S3 in stage-based folders
+    ```
+    s3://<shared-bucket>/<stage>/logs/
+    s3://<shared-bucket>/<stage>/status/
+    ```
+  - `dev` stage uses public repo — no GitHub token needed
+  - `prod` stage uses private repo — requires GitHub token
+- Health check:
+  - Script uploads `app_ready.txt` in the corresponding stage folder to confirm successful deployment
+
+> ✅ Logs from both `dev` and `prod` are stored in **the same S3 bucket**, but **under their own separate folders** based on stage — no duplication or conflicts.
+
+---
+
+## 🔐 GitHub Secrets Required
+
+Create these secrets in GitHub Actions:
+
+| Name                    | Description                               |
+|-------------------------|-------------------------------------------|
+| `AWS_ACCESS_KEY_ID`     | AWS IAM user's access key                 |
+| `AWS_SECRET_ACCESS_KEY` | AWS IAM user's secret access key          |
+| `PRIVATE_REPO_TOKEN`    | GitHub token for accessing private repo   |
+| `PRIVATE_REPO`          | username/repo_name for `prod` stage       |
+| `PUBLIC_REPO`           | username/repo_name for `dev` stage        | 
+
+---
+
+## 🛠️ What You Need To Do
+
+Before running the workflow:
+
+- ✅ Set up a **public GitHub repo** for `dev` (can be the provided one)
+- ✅ Fork and make a **private GitHub repo** for `prod` stage
+- ✅ Configure your AWS IAM user with EC2, S3, and IAM access
+- ✅ Add the above **GitHub Secrets** to your repository
+
+---
+
+## 🚦 Workflow Usage
+
+You can trigger the deployment in two ways:
+
+### 1. ✅ **Automatic Trigger**
+Push a Git tag to run the workflow:
+- `deploy-dev` → runs deployment for the dev stage
+- `deploy-prod` → runs deployment for the prod stage
+
+### 2. 🔘 **Manual Trigger**
+Go to **GitHub Actions → Run workflow**:
+- Select your desired `stage` (dev or prod)
+- Click **Run workflow**
+
+> ⚠️ Run the `dev` stage first — it creates the shared resources like S3, IAM, etc.  
+> Then run the `prod` stage, which **reuses** those resources using `data` blocks in Terraform.
+
+---
+
+## 📂 S3 Logs & Status
+
+After each deployment:
+
+- Logs go to:
+s3://<your-shared-bucket>/dev/logs/ 
+s3://<your-shared-bucket>/prod/logs/
+
+- App readiness file is uploaded as:
+
+s3://<your-shared-bucket>/dev/status/app_ready.txt 
+s3://<your-shared-bucket>/prod/status/app_ready.txt
+
+---
+
+---
+
+## 📸 Screenshots
+
+> 📁 All screenshots are stored in: `output-4/`
+
+### ✅ Running Instances for dev/prod
+![Instances for both dev/prod are running](output-4/dev-prod-instance.png)
+
+### ✅ Successfull deployment for dev
+![Successfull deployment for dev](output-4/dev_stage_ec2_deployed.png)
+
+### ✅ Successfull deployment for prod
+![Successfull deployment for prod](output-4/prod_stage_ec2_deployed.png)
+
+### ✅ S3 Logs (Dev and Prod)
+![S3 Logs dev/prod](output-4/dev_prod_logs.png)
+
+### ✅ GitHub Actions - Dev
+![GitHub Actions Dev](output-4/dev_workflow.png)
+
+### ✅ GitHub Actions - Prod
+![GitHub Actions Prod](output-4/prod_workflow.png)
+
+### ✅ Successfull Workflow for both stage-dev/prod
+![workflow sucsess for both stages](output-4/dev_prod_workflow.png)
+
+
+## ✅ Final Notes
+
+- Dev stage creates resources. Prod stage **reuses** them via `data` blocks
+- IAM instance profile and roles are **shared** between both environments
+- GitHub token is **not hardcoded** — it is securely passed as a secret only in `prod`
+- S3 bucket is **common** across both stages and separated logically by folder structure
+- Health validation waits for `app_ready.txt` before passing
