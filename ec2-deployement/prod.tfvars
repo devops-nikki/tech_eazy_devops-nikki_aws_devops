@@ -6,4 +6,5 @@ github_private_repo    = "devops-nikki/techeazy-devops-prod-infra"
 github_token           = "placeholder"                                  
 stage                  = "prod"
 shutdown_after_minutes = 30
-log_s3_bucket_name = "techeazy-logs-bucket-nikki"
+log_s3_bucket_name     = "techeazy-logs-bucket-nikki"
+alert_email            = "devops.nikki@gmail.com"

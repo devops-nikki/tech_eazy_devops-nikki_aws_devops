@@ -6,4 +6,5 @@ github_token           = ""                                     #empty for dev
 stage                  = "dev"
 shutdown_after_minutes = 30
 log_s3_bucket_name     = "techeazy-logs-bucket-nikki"
+alert_email            = "devops.nikki@gmail.com"
                                      

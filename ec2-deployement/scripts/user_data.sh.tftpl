@@ -9,7 +9,7 @@ shutdown_after_minutes=${shutdown_after_minutes}
 
 # Update system and install required packages
 apt-get update -y
-apt-get install -y unzip curl openjdk-21-jdk git maven
+apt-get install -y unzip curl wget openjdk-21-jdk git maven
 
 # Install AWS CLI v2 if not installed
 if ! command -v aws &> /dev/null; then
@@ -31,6 +31,31 @@ java -jar target/*.jar --server.port=80 > /var/log/my-app.log 2>&1 &
 
 # Wait for app to start
 sleep 120
+
+# Download CloudWatch Agent
+wget https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
+sudo dpkg -i amazon-cloudwatch-agent.deb
+
+stage="${stage}"
+
+if [ "$stage" = "prod" ]; then
+  # Use GitHub token for private repo
+  CONFIG_URL="https://${github_token}@raw.githubusercontent.com/devops-nikki/techeazy-devops-prod-infra/master/cloudwatch-prod-config.json"
+else
+  # Public repo for dev
+  CONFIG_URL="https://raw.githubusercontent.com/devops-nikki/tech_eazy_devops-nikki_aws_devops/feature/assignment-5/config/cloudwatch-dev-config.json"
+fi
+
+# Create CloudWatch Agent directory if not exists
+#sudo mkdir -p /opt/aws/amazon-cloudwatch-agent/etc/
+curl -o /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json $CONFIG_URL
+
+# Start the CloudWatch agent with the config
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+  -a fetch-config \
+  -m ec2 \
+  -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json \
+  -s
 
 # Generate fallback config instead of fetching from S3
 cat <<EOF > /home/ubuntu/app_config.json

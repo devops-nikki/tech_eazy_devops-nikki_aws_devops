@@ -49,6 +49,7 @@ resource "aws_instance" "app_server" {
     stage= var.stage
     TIMESTAMP= timestamp()
     REPO_URL= local.repo_url
+    github_token=var.github_token
 })
 
   tags = {
