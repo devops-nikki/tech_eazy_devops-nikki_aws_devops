@@ -737,6 +737,15 @@ Below are the screenshots demonstrating the key steps of Assignment 5 execution:
 ### Subscription-confirmed on SNS
 ![Subscription-confirmed](Output-5/subscription.png)
 
+### ✅ GitHub Actions - Dev
+![GitHub Actions Dev](Output-5/dev_workflow.png)
+
+### ✅ GitHub Actions - Prod
+![GitHub Actions Prod](Output-5/prod_workflow.png)
+
+### ✅ Successfull Workflow for both stage-dev/prod
+![workflow sucsess for both stages](Output-5/dev_prod_workflow.png)
+
 > You can find all screenshots in the `Output-5` directory of this repository.
 
 ## ✨ Author
