@@ -1,4 +1,4 @@
-name: Destroy Multi-Stage Infra
+name: Destroy Workflow for Multi-Stage Terraform
 
 on:
   workflow_dispatch:
@@ -24,26 +24,26 @@ jobs:
       SELECTED_STAGE: ${{ github.event.inputs.stage }}
 
     steps:
-      - name: 📦 Checkout Repo
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: 🔐 Configure AWS Credentials
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: 🔧 Setup Terraform
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: 🏗️ Terraform Init & Select Workspace
+      - name: Terraform Init & Workspace
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: |
           terraform init
           terraform workspace select ${{ env.SELECTED_STAGE }}
 
-      - name: ❌ Terraform Destroy
+      - name: Terraform Destroy
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: |
           if [ "${{ env.SELECTED_STAGE }}" == "prod" ]; then

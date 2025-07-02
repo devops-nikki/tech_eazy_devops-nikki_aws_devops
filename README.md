@@ -650,9 +650,9 @@ This assignment extends the previous infrastructure to implement **CloudWatch-ba
 ## 🛠️ What Was Implemented
 
 ### 🔸 CloudWatch Integration
-- Installed **Amazon CloudWatch Agent** via `user_data`
+- Installed **Amazon CloudWatch Agent** via `user_data.sh.tftpl`
 - Downloaded config file from GitHub based on selected stage
-- Pushed logs like `/var/log/messages` and `/var/log/cloud-init.log` to CloudWatch
+- Pushed logs like `/var/log/my-app.log`and `/var/log/cloud-init.log` to CloudWatch
 
 ### 🔸 Metric Filter & Alarm (manual)
 - Metric filter (for `Error`, `Exception`) added manually via Console
@@ -671,9 +671,9 @@ This assignment extends the previous infrastructure to implement **CloudWatch-ba
 - `cloudwatch.tf`: Log group and agent config
 - `iam.tf`: CloudWatch permissions added to Role B
 - `sns.tf`: SNS topic and subscription
-- `user_data_cloudwatch.sh.tftpl`: Boot script for agent + app
-- `cloudwatch-config.json`: Fetched dynamically per stage
+- `user_data.sh.tftpl`: Boot script for agent + app
 - `dev.tfvars` / `prod.tfvars`: Configurable per environment
+- `cloudwatch-dev-config.json` and `cloudwatch-prod-config.json`: Fetched dynamically per stage
 
 ### 🔸 GitHub Workflow Reused
 - Used same **`deploy.yml`** from Assignment 4 for CI/CD
@@ -699,3 +699,49 @@ This assignment extends the previous infrastructure to implement **CloudWatch-ba
 - [x] Metric filter manually tested
 - [x] Email alert received on error log
 - [x] Working across `dev` and `prod`
+
+---
+
+## 📸 Screenshots
+
+Below are the screenshots demonstrating the key steps of Assignment 5 execution:
+
+### 📁 Log Group Created
+
+![Log Group](Output-5/cloudwatch-log.png)
+
+### 🛠 Metric Filter for Errors & Exceptions
+
+![Metric Filter](Output-5/metric-filter-dev.png)
+![Metric Filter](Output-5/metric-filter-prod.png)
+                  
+### 📩 SNS Email Alert Triggered
+
+![SNS Email](Output-5/sns-email-alert-dev.png)
+![SNS Email](Output-5/sns-email-alert-prod.png)
+
+### 💻 Alarm-alert when reaches the threshold
+
+![Alarm_alert](Output-5/alarm-alert.png)
+
+### 📩 SNS topic
+![SNS topic-dev](Output-5/sns-topic.png)
+
+### Testing Cloudwatch alarm through ssh to ec2
+![ssh-ec2-dev](Output-5/ssh-ec2-dev.png)
+![ssh-ec2-prod](Output-5/ssh-ec2-prod.png)
+
+### Subscription Confirmation-on email
+![subscription-confirmation](Output-5/subscription-confirmation.png)
+
+### Subscription-confirmed on SNS
+![Subscription-confirmed](Output-5/subscription.png)
+
+> You can find all screenshots in the `Output-5` directory of this repository.
+
+## ✨ Author
+
+👩‍💻 **Nikki Goyal**  
+🎓 Role: AWS DevOps Intern – TechEazy Consulting  
+💡 Skills: AWS | Terraform | GitHub Actions | DevOps | CI/CD | Java | S3  
+🔗 LinkedIn: [linkedin.com/in/nikki-goyal-devops](https://www.linkedin.com/in/nikki-goyal-devops)
