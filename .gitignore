@@ -4,3 +4,5 @@ terraform.tfstate.backup
 .terraform.lock.hcl
 .terraform.tfstate.lock.info
 terraform.tfstate.d
+.github\workflows
+deploy.yml

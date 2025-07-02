@@ -43,3 +43,7 @@ variable "github_private_repo" {
   type=string
 }
 
+variable "alert_email" {
+  description = "Email Address to receive Cloudwatch Alerts"
+  type = string
+}
