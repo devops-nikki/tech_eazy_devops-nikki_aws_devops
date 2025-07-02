@@ -1,4 +1,4 @@
-name: Destroy Workflow for Multi-Stage Terraform
+name: Destroy- Workflow for Multi-Stage Terraform
 
 on:
   workflow_dispatch:
