@@ -1,0 +1,60 @@
+name: Destroy Multi-Stage Infra
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "Select stage to destroy"
+        required: true
+        default: dev
+        type: choice
+        options:
+          - dev
+          - prod
+
+env:
+  AWS_REGION: ap-south-1
+  TF_WORKING_DIR: ./ec2-deployement
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+
+    env:
+      SELECTED_STAGE: ${{ github.event.inputs.stage }}
+
+    steps:
+      - name: 📦 Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: 🔐 Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: 🔧 Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: 🏗️ Terraform Init & Select Workspace
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          terraform init
+          terraform workspace select ${{ env.SELECTED_STAGE }}
+
+      - name: ❌ Terraform Destroy
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          if [ "${{ env.SELECTED_STAGE }}" == "prod" ]; then
+            terraform destroy -auto-approve \
+              -var-file=prod.tfvars \
+              -var="github_private_repo=${{ secrets.PRIVATE_REPO }}" \
+              -var="github_token=${{ secrets.PRIVATE_REPO_TOKEN }}" \
+              -var="stage=prod"
+          else
+            terraform destroy -auto-approve \
+              -var-file=dev.tfvars \
+              -var="github_repo_url=https://github.com/${{ secrets.PUBLIC_REPO }}" \
+              -var="stage=dev"
+          fi

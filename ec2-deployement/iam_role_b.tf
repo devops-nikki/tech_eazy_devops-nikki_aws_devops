@@ -58,5 +58,5 @@ resource "aws_iam_role_policy_attachment" "s3_and_cloudwatch_policy_attach" {
 
 data "aws_iam_role" "role_b_combined" {
   count = var.stage =="prod" ? 1:0
-  name = "s3_cloudwatch_role"
+  name = "s3_and_cloudwatch_role"
 }

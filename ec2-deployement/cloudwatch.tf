@@ -1,8 +1,10 @@
 # cloudwatch.tf
 
 resource "aws_cloudwatch_log_group" "app_log_group" {
-  name              = "/ec2/app-${var.stage}"
+  name              = "/ec2/${var.stage}-my-app.log"
   retention_in_days = 7
+  
+
   tags = {
     Name = "AppLogGroup-${var.stage}"
   }
@@ -20,6 +22,7 @@ resource "aws_cloudwatch_log_metric_filter" "App_error_filter" {
     namespace = "AppLogMetrics"
     value     = "1"
   }
+   depends_on          = [aws_cloudwatch_log_group.app_log_group]
 }
 
 resource "aws_cloudwatch_metric_alarm" "App_error_alarm" {
