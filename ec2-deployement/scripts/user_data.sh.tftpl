@@ -36,12 +36,19 @@ sleep 120
 wget https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
 sudo dpkg -i amazon-cloudwatch-agent.deb
 
-# Create CloudWatch Agent directory if not exists
-sudo mkdir -p /opt/aws/amazon-cloudwatch-agent/etc/
+stage="${stage}"
 
-# Download CloudWatch Agent config file (from GitHub)
-curl -o /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json \
-  https://raw.githubusercontent.com/<devops-nikki>/<tech_eazy_devops-nikki_aws_devops>/config/cloudwatch-config.json
+if [ "$stage" = "prod" ]; then
+  # Use GitHub token for private repo
+  CONFIG_URL="https://${github_token}@raw.githubusercontent.com/devops-nikki/techeazy-devops-prod-infra/master/cloudwatch-prod-config.json"
+else
+  # Public repo for dev
+  CONFIG_URL="https://raw.githubusercontent.com/devops-nikki/tech_eazy_devops-nikki_aws_devops/feature/assignment-5/cloudwatch-dev-config.json"
+fi
+
+# Create CloudWatch Agent directory if not exists
+#sudo mkdir -p /opt/aws/amazon-cloudwatch-agent/etc/
+curl -o /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json $CONFIG_URL
 
 # Start the CloudWatch agent with the config
 sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
