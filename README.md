@@ -708,7 +708,7 @@ Below are the screenshots demonstrating the key steps of Assignment 5 execution:
 
 ### 📁 Log Group Created
 
-![Log Group](Output-5/cloudwatch-log.png)
+![Log Group](Output-5/cloudwatch-logs.png)
 
 ### 🛠 Metric Filter for Errors & Exceptions
 
